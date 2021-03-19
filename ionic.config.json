@@ -1,0 +1,7 @@
+{
+  "name": "car_tracking",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
