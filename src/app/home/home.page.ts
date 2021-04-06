@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { HttpService } from '../../services/http.service';
+import { Platform, LoadingController } from '@ionic/angular';
+
+declare var google;
 
 @Component({
   selector: 'app-home',
@@ -6,7 +10,230 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  public map: any;
+  public direction = 0;
+  public infoWindow = new google.maps.InfoWindow();
+  public userData: Array<any> = [];
+  public marker: any;
+  public loading: any;
+  public roueName: Array<any> = [];
+  public route_id: any = '001';
+  public directionsService = new google.maps.DirectionsService();
+  public directionsRenderer = new google.maps.DirectionsRenderer({
+    suppressMarkers: true,
+  });
+  public testpoint: Array<any> = [];
+  public flightPath = new google.maps.Polyline({
+    path: this.testpoint,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 1,
+  });
+  constructor(
+    private http: HttpService,
+    public loadingCtrl: LoadingController
+  ) {}
+  ngOnInit() {
+    this.checkEXD();
+    this.loadmap();
+    this.getRoute('001');
+    this.getRouteName();
+  }
+  async loadmap() {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Please wait...',
+    });
+    await this.loading.present();
 
-  constructor() {}
+    this.map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: { lat: 14.9736915, lng: 102.0827157 },
+    });
+    this.directionsRenderer.setMap(this.map);
+    console.log(this.testpoint[0].lat);
+    this.marker = await new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: { lat: 14.9736915, lng: 102.0827157 },
+    });
+    this.flightPath.setMap(this.map);
 
+    this.loading.dismiss();
+  }
+  calculateAndDisplayRoute = (
+    directionsService: any,
+    directionsRenderer: any
+  ) => {
+    const waypts = [];
+    let n = this.testpoint.length;
+    for (let i = 1; i < this.testpoint.length - 1; i++) {
+      waypts.push({
+        location: {
+          lat: this.testpoint[i].lat,
+          lng: this.testpoint[i].lng,
+        },
+        stopover: true,
+      });
+    }
+
+    directionsService.route(
+      {
+        origin: { lat: this.testpoint[0].lat, lng: this.testpoint[0].lng },
+        destination: {
+          lat: this.testpoint[n - 1].lat,
+          lng: this.testpoint[n - 1].lng,
+        },
+        waypoints: waypts,
+        optimizeWaypoints: false,
+        travelMode: 'WALKING',
+      },
+      (response, status) => {
+        if (status === 'OK' && response) {
+          this.infoWindow.setPosition({
+            lat: this.testpoint[0].lat,
+            lng: this.testpoint[0].lng,
+          });
+          this.infoWindow.setContent('จุดเริ่มต้น');
+          this.infoWindow.open(this.map);
+          directionsRenderer.setOptions({
+            polylineOptions: {
+              strokeColor: 'red',
+              strokeOpacity: 0.8,
+              strokeWeight: 5,
+            },
+          });
+          directionsRenderer.setDirections(response);
+          if (this.direction == 0) {
+            directionsRenderer.setOptions({
+              polylineOptions: {
+                strokeColor: 'blue',
+                strokeOpacity: 0.8,
+                strokeWeight: 5,
+              },
+            });
+            directionsRenderer.setDirections(response);
+          }
+         
+          // const route = response.routes[0];
+          // const summaryPanel = document.getElementById(
+          //   "directions-panel"
+          // ) as HTMLElement;
+          // summaryPanel.innerHTML = "";
+
+          // // For each route, display summary information.
+          // for (let i = 0; i < route.legs.length; i++) {
+          //   const routeSegment = i + 1;
+          //   summaryPanel.innerHTML +=
+          //     "<b>Route Segment: " + routeSegment + "</b><br>";
+          //   summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+          //   summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
+          //   summaryPanel.innerHTML += route.legs[i].distance!.text + "<br><br>";
+          // }
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      }
+    );
+  };
+  checkEXD = async () => {
+    let httpRespone: any = await this.http.get('getexduser');
+    if (httpRespone.response.success) {
+      // console.log(httpRespone.response.data);
+      this.userData = httpRespone.response.data;
+    } else {
+      this.userData = null;
+    }
+    if (this.userData) {
+      this.userData.forEach(async (item) => {
+        let formData = new FormData();
+        formData.append('status_carcard_id', '1');
+        formData.append('driver_id', item.driver_id);
+        if (this.http.checkEXD(item.exd_carcard_id) === false) {
+          let httpRespone: any = await this.http.post(
+            'updatestatuscarcardid',
+            formData
+          );
+          // console.log(httpRespone);
+        }
+      });
+    }
+  };
+  checkUser = async () => {
+    let type = await this.http.localStorage.get('user');
+    // console.log(type);
+
+    if (type) {
+      if (type.type_driver === 2) {
+        this.http.navRouter('/home/admin');
+      } else if (type.type_driver === 1) {
+        this.http.navRouter('/home/company');
+      } else if (type.type_driver === 0) {
+        this.http.navRouter('/home/driver');
+      }
+    } else {
+      this.http.navRouter('/home/login');
+    }
+  };
+  getLocation = async () => {
+    this.loading = await this.loadingCtrl.create({
+      message: 'Please wait...',
+    });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position: any) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+
+          // this.infoWindow.setPosition(pos);
+          // this.infoWindow.setContent("ตำแหน่งของคุณ");
+          //this.infoWindow.open(this.map);
+          this.map.setCenter(pos);
+          this.loading.dismiss();
+          this.marker.setPosition(pos);
+        },
+        () => {
+          //this.handleLocationError(true, infoWindow, map.getCenter()!);
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation
+      // handleLocationError(false, infoWindow, map.getCenter()!);
+    }
+  };
+  getRoute = async (route_id) => {
+    let formData = new FormData();
+    formData.append('route_id', route_id);
+    formData.append('direction', this.direction.toString());
+    let httpRespone: any = await this.http.post('getroute', formData);
+    if (httpRespone.response.success) {
+      // console.log(httpRespone.response.data);
+      this.testpoint = httpRespone.response.data.map((value) => {
+        return { lat: parseFloat(value.lat), lng: parseFloat(value.lng) };
+      });
+      this.calculateAndDisplayRoute(
+        this.directionsService,
+        this.directionsRenderer
+      );
+    } else {
+      this.testpoint = [];
+    }
+  };
+  setDirection(value) {
+    this.direction = value.detail.value;
+    this.getRoute(this.route_id);
+  }
+  getRouteName = async () => {
+    let formData = new FormData();
+    formData.append('company_id', '');
+    let httpRespone: any = await this.http.post('getrouteselect', formData);
+    if (httpRespone.response.success) {
+      // console.log(httpRespone.response.data);
+      this.roueName = httpRespone.response.data;
+    } else {
+      this.roueName = null;
+    }
+  };
 }

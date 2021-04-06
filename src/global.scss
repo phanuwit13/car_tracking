@@ -24,3 +24,19 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@font-face {
+    font-family: 'WDB_Bangna';
+    src: url('./assets/fonts//WDB_Bangna/WDB_Bangna.ttf');//mine
+  }
+  
+  * {
+    font-family: 'WDB_Bangna';
+    letter-spacing: 2px 
+  }
+  .modal-backdrop {
+    z-index: -1 !important;
+  }
+  .modal {
+    padding-top: 10%;
+  }

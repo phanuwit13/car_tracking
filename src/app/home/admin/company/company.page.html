@@ -1,0 +1,367 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>สถานประกอบการ</ion-title>
+    <ion-button
+    data-toggle="modal"
+    data-target="#staticBackdrop2"
+      class="login pr-1"
+      size="small"
+      slot="end"
+      color="success"
+      >เพิ่ม</ion-button
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+  <div class="container">
+    <div class="box-newcompany">
+      <div [routerLink]="['pending']" class="row company-list">
+        <div class="col-2 col-md-1">
+          <img src="assets/icon/warning.png" alt="" />
+        </div>
+        <div class="col-10 col-md-11">
+          สถานประกอบการที่รอการอนุมัติ
+          <span *ngIf="this.companyPending" class="notify-badge"
+            >{{this.companyPending.length}}</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="box-newcompany">
+      <div [routerLink]="['reject']" class="row company-list">
+        <div class="col-2 col-md-1">
+          <img src="assets/icon/remove.png" alt="" />
+        </div>
+        <div class="col-10 col-md-11">สถานประกอบการที่ปิดการใช้งาน</div>
+      </div>
+    </div>
+    <ion-searchbar></ion-searchbar>
+
+    <ul class="list-group">
+      <li class="row boxdatalist" *ngFor="let item of companyApproved">
+        <div class="col-8 col-md-10 d-flex align-items-center">
+          {{item.company_name}}
+        </div>
+        <button
+          data-toggle="modal"
+          data-target="#staticBackdrop"
+          (click)="setCompanyEdit(item)"
+          class="col-2 col-md-1 bg-warning d-flex align-items-center text-white text-alingcenter"
+        >
+          แก้ไข
+        </button>
+        <button
+          (click)="deleteCompany(item.company_id)"
+          class="col-2 col-md-1 bg-danger d-flex align-items-center text-white text-alingcenter"
+        >
+          ลบ
+        </button>
+      </li>
+    </ul>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">
+              แก้ไข สถานประกอบการ
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="" [formGroup]="form_edit">
+              <div class="form-group">
+                <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
+                <input
+                  formControlName="company_name"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+                <input
+                  value="{{this.form_edit.value.identification_id}}"
+                  disabled
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
+                <input
+                  value="{{this.form_edit.value.carcard_id}}"
+                  disabled
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
+                <input
+                  formControlName="exd_carcard_id"
+                  class="form-control"
+                  type="date"
+                  id="example-date-input"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">คำนำหน้า</label>
+                <select formControlName="driver_title" class="form-control">
+                  <option *ngFor="let item of titleName" [value]="item">
+                    {{item}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ชื่อจริง</label>
+                <input
+                  formControlName="driver_fname"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">นามสกุล</label>
+                <input
+                  formControlName="driver_lname"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ที่อยู่สถานประกอบการ</label>
+                <textarea
+                  formControlName="company_address"
+                  type="text"
+                  class="form-control"
+                  rows="4"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
+                <input
+                  formControlName="company_phone"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รหัสผ่าน</label>
+                <input
+                  formControlName="password"
+                  type="password"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">สถานะ</label>
+                <select formControlName="status" class="form-control">
+                  <option *ngFor="let item of status" [value]="item">
+                    {{item}}
+                  </option>
+                </select>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="closeModal"
+            >
+              ยกเลิก
+            </button>
+            <button type="button" (click)="onUpdate()" class="btn btn-success">
+              บันทึก
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal2 -->
+  <div
+    class="modal fade"
+    id="staticBackdrop2"
+    data-backdrop="static"
+    data-keyboard="false"
+    tabindex="-1"
+    aria-labelledby="staticBackdropLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">
+            เพิ่ม สถานประกอบการ
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="form_register">
+            <!-- <div class="form-group">
+                <label for="exampleInputEmail1">ชื่อผู้ใช้</label>
+                <input
+                  formControlName="username"
+                  type="text"
+                  class="form-control"
+                  aria-describedby="emailHelp"
+                />
+              </div> -->
+            <div class="form-group">
+              <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
+              <input
+                formControlName="company_name"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+              <input
+                formControlName="identification_id"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
+              <input
+                formControlName="carcard_id"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
+              <input
+                formControlName="exd_carcard_id"
+                class="form-control"
+                type="date"
+                id="example-date-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">คำนำหน้า</label>
+              <select formControlName="driver_title" class="form-control">
+                <option *ngFor="let item of titleName" [value]="item">
+                  {{item}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">ชื่อจริง</label>
+              <input
+                formControlName="driver_fname"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">นามสกุล</label>
+              <input
+                formControlName="driver_lname"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">ที่อยู่สถานประกอบการ</label>
+              <textarea
+                formControlName="company_address"
+                type="text"
+                class="form-control"
+                rows="4"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
+              <input
+                formControlName="company_phone"
+                type="text"
+                class="form-control"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">รหัสผ่าน</label>
+              <input
+                formControlName="password"
+                type="password"
+                class="form-control"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="exampleInputPassword1">ยืนยันรหัสผ่าน</label>
+              <input
+                formControlName="confirmPassword"
+                type="password"
+                class="form-control"
+              />
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            id="closeModal2"
+          >
+            ยกเลิก
+          </button>
+          <button
+            type="button"
+            [disabled]="form_register.invalid"
+            (click)="onRegister()"
+            class="btn btn-success"
+          >
+            เพิ่ม
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <ion-fab horizontal="end" vertical="bottom" slot="">
+    <ion-fab-button
+      data-toggle="modal"
+      data-target="#staticBackdrop2"
+      color="success"
+    >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+</ion-content>

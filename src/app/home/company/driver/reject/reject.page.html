@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>ปิดการใช้งาน</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <ul class="list-group accordion">
+      <li
+        class="list-company"
+        id="accordionExample"
+        *ngFor="let item of driverReject"
+      >
+        <div class="row boxdatalist">
+          <a
+            type="button"
+            data-toggle="collapse"
+            [attr.data-target]="'#company'+item.driver_id"
+            aria-expanded="false"
+            class="col-8 col-md-10 d-flex align-items-center"
+          >
+            {{item.driver_title+item.driver_fname+" "+item.driver_lname}}
+          </a>
+          <button
+            (click)="onUpdate(item,'approved')"
+            class="col-2 col-md-1 bg-success d-flex align-items-center text-white text-alingcenter"
+          >
+            เปิด
+          </button>
+          <button
+            (click)="deleteUser(item.driver_id)"
+            class="col-2 col-md-1 bg-danger d-flex align-items-center text-white text-alingcenter"
+          >
+            ลบ
+          </button>
+        </div>
+        <div
+          id="company{{item.driver_id}}"
+          class="collapse"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            <form>
+              <!-- <div class="form-group">
+                <label for="exampleInputEmail1">ชื่อผู้ใช้</label>
+                <input
+                  formControlName="username"
+                  type="text"
+                  class="form-control"
+                  aria-describedby="emailHelp"
+                />
+              </div> -->
+              <div class="form-group">
+                <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
+                <input
+                  disabled
+                  value="{{item.company_name}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+                <input
+                  disabled
+                  value="{{item.identification_id}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
+                <input
+                  disabled
+                  value="{{item.carcard_id}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
+                <input
+                  disabled
+                  value="{{item.exd_carcard_id}}"
+                  class="form-control"
+                  type="date"
+                
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">คำนำหน้า</label>
+                <input
+                  disabled
+                  value="{{item.driver_title}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ชื่อจริง</label>
+                <input
+                  disabled
+                  value="{{item.driver_fname}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">นามสกุล</label>
+                <input
+                  disabled
+                  value="{{item.driver_lname}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
+                <input
+                  disabled
+                  value="{{item.company_phone}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</ion-content>

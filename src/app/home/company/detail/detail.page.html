@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>รายละเอียด</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="row">
+      <div class="col-6 box-regis" [routerLink]="['/home/company/car']">
+        <div class="card-regis">
+          <div class="card-regis">
+            <img class="box-img" src="assets/img/minibus.png" alt="" />
+          </div>
+          <span class="font-weight-bold">{{this.carData.length}}</span>
+        </div>
+      </div>
+      <div class="col-6 box-regis" [routerLink]="['/home/company/driver']">
+        <div class="card-regis">
+          <div class="card-regis">
+            <img class="box-img" src="assets/img/driver.png" alt="" />
+          </div>
+          <span class="font-weight-bold">{{this.driverApproved.length}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center h5 pt-3">
+        ข้อมูลสถานประกอบการ
+      </div>
+      <div class="col-12">
+        <form action="" [formGroup]="form_edit">
+          <div class="form-group">
+            <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
+            <input
+              formControlName="company_name"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+            <input
+              value="{{this.form_edit.value.identification_id}}"
+              disabled
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
+            <input
+              value="{{this.form_edit.value.carcard_id}}"
+              disabled
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
+            <input
+              formControlName="exd_carcard_id"
+              class="form-control"
+              type="date"
+              id="example-date-input"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">คำนำหน้า</label>
+            <select formControlName="driver_title" class="form-control">
+              <option *ngFor="let item of titleName" [value]="item">
+                {{item}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">ชื่อจริง</label>
+            <input
+              formControlName="driver_fname"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">นามสกุล</label>
+            <input
+              formControlName="driver_lname"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">ที่อยู่สถานประกอบการ</label>
+            <textarea
+              formControlName="company_address"
+              type="text"
+              class="form-control"
+              rows="4"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
+            <input
+              formControlName="company_phone"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">รหัสผ่าน</label>
+            <input
+              formControlName="password"
+              type="password"
+              class="form-control"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <section *ngIf="isEdit">
+          <ion-button
+          (click)="disableFormEdit('disable')"
+            color="light"
+            expand="block"
+            ><b>ยกเลิก</b></ion-button
+          >
+        </section>
+      </div>
+      <div class="col-6 pb-3">
+        <section *ngIf="!isEdit">
+          <ion-button
+          (click)="disableFormEdit('enable')"
+            color="warning"
+            expand="block"
+            ><b>แก้ไข</b></ion-button
+          >
+        </section>
+        <section *ngIf="isEdit">
+          <ion-button
+          (click)="onUpdate()"
+            color="success"
+            expand="block"
+            ><b>บันทึก</b></ion-button
+          >
+        </section>
+      </div>
+    </div>
+  </div>
+</ion-content>

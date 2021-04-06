@@ -1,0 +1,141 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>ใบอนุญาติขับขี่หมดอายุ</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <ul class="list-group accordion">
+      <li class="list-company" id="accordionExample" *ngFor="let item of driverExp">
+        <div class="row boxdatalist">
+          <a
+            type="button"
+            data-toggle="collapse"
+            [attr.data-target]="'#company'+item.company_id"
+            aria-expanded="false"
+            class="col-8 col-md-10 d-flex align-items-center"
+          >
+            {{item.driver_title+item.driver_fname+" "+item.driver_lname}}
+          </a>
+          <button
+          data-toggle="modal"
+          data-target="#expstaticBackdrop"
+          (click)="setCompanyEdit(item)"
+            class="col-2 col-md-1 bg-success d-flex align-items-center text-white text-alingcenter"
+          >
+            ต่อ
+          </button>
+          <button
+      
+            class="col-2 col-md-1 bg-danger d-flex align-items-center text-white text-alingcenter"
+          >
+            ยกเลิก
+          </button>
+        </div>
+        <div id="company{{item.company_id}}" class="collapse" data-parent="#accordionExample">
+          <div class="card-body">
+            <form>
+              <!-- <div class="form-group">
+                <label for="exampleInputEmail1">ชื่อผู้ใช้</label>
+                <input
+                  formControlName="username"
+                  type="text"
+                  class="form-control"
+                  aria-describedby="emailHelp"
+                />
+              </div> -->
+              <div class="form-group">
+                <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
+                <input disabled value={{item.company_name}}  type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+                <input disabled  value={{item.identification_id}}  type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">เลขที่ใบขับขี่</label>
+                <input disabled value={{item.carcard_id}}  type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">คำนำหน้า</label>
+                <input disabled value={{item.driver_title}}  type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ชื่อจริง</label>
+                <input disabled value={{item.driver_fname}}  type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">นามสกุล</label>
+                <input disabled value={{item.driver_lname}}  type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
+                <input disabled value={{item.driver_phone}}  type="text" class="form-control" />
+              </div>
+          </form>
+        </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div
+      class="modal fade"
+      id="expstaticBackdrop"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">
+              ต่ออายุใบอนุญาติขับขี่
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="" [formGroup]="form_edit">
+              <div class="form-group">
+                <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
+                <input
+                  formControlName="exd_carcard_id"
+                  class="form-control"
+                  type="date"
+                  id="example-date-input"
+                />
+              </div>
+              
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="closeexp"
+            >
+              ยกเลิก
+            </button>
+            <button type="button" (click)="onUpdate()" class="btn btn-success">
+              บันทึก
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+</ion-content>

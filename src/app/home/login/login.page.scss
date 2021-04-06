@@ -1,0 +1,12 @@
+.boxlogin{
+    display: flex;
+    justify-content: center;
+}
+.img-login{
+    width: 75%;
+}
+@media(min-width:700px){
+    .img-login{
+        width: 40%;
+    }
+}

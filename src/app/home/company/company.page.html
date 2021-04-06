@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>สถานประกอบการ</ion-title>
+    <ion-button
+      size="small"
+      slot="end"
+      color="danger"
+      class="logout"
+      (click)="Logout()"
+      >LOGOUT</ion-button
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6 box-regis" [routerLink]="['detail']">
+        <div class="card-regis">
+          <div class="card-regis">
+            <img class="box-img" src="assets/img/buildings.png" alt="" />
+          </div>
+          <span>สถานประกอบการ</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 box-regis" [routerLink]="['driver']">
+        <div class="card-regis">
+          <div class="card-regis">
+            <span *ngIf="this.driverPending.length !==0 " class="notify-badge"
+              >{{this.driverPending.length}}</span
+            >
+            <img class="box-img" src="assets/img/driver.png" alt="" />
+          </div>
+          <span>พนักงานขับรถ</span>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 box-regis" [routerLink]="['car']">
+        <div class="card-regis">
+          <div class="card-regis">
+            <img class="box-img" src="assets/img/minibus.png" alt="" />
+          </div>
+          <span>รถ</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

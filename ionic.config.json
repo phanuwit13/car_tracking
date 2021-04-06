@@ -1,7 +1,8 @@
 {
   "name": "car_tracking",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

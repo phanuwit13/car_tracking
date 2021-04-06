@@ -1,0 +1,35 @@
+.boxdatalist {
+    height: 60px;
+    // background-color: rgb(243, 243, 243);
+    // margin-top: 5px;
+    border-bottom: 1px solid #e9e9e9;
+    //text-align: start;
+  }
+  .text-alingcenter {
+    justify-content: center;
+  }
+  .company-list {
+    height: 60px;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    margin: 10px 0px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    // justify-content: center;
+  }
+  .notify-badge {
+    position: absolute;
+    right: -10px;
+    width: 40px;
+    height: auto;
+    top: -27px;
+    background: #f45c51;
+    text-align: center;
+    border-radius: 20px 20px 20px 20px;
+    color: white;
+    padding: 5px 5px;
+    font-size: 18px;
+  }
+  
+  

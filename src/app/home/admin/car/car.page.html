@@ -1,0 +1,269 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>รถ</ion-title>
+    <ion-button
+      data-toggle="modal"
+      data-target="#staticBackdrop2"
+      class="login pr-1"
+      size="small"
+      slot="end"
+      color="success"
+      >เพิ่ม</ion-button
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+  <div class="container">
+    <ion-searchbar></ion-searchbar>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+      <select #company (change)="getCar(company.value)" class="form-control">
+        <option *ngFor="let item of companyApproved" [value]="item.company_id">
+          {{item.company_name}}
+        </option>
+      </select>
+    </div>
+
+    <ul class="list-group">
+      <li class="row boxdatalist" *ngFor="let item of carData">
+        <div class="col-8 col-md-10 d-flex align-items-center">
+          {{item.car_number+" "+item.provinces}}
+        </div>
+        <button
+          (click)="setDriverEdit(item)"
+          data-toggle="modal"
+          data-target="#staticBackdropEdit"
+          class="col-2 col-md-1 bg-warning d-flex align-items-center text-white text-alingcenter"
+        >
+          แก้ไข
+        </button>
+        <button
+          (click)="deleteCar(item.car_id)"
+          class="col-2 col-md-1 bg-danger d-flex align-items-center text-white text-alingcenter"
+        >
+          ลบ
+        </button>
+      </li>
+    </ul>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdropEdit"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">แก้ไข ข้อมูลรถ</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="form_edit">
+              <div class="form-group">
+                <label for="exampleInputPassword1">ทะเบียนรถ</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled
+                  value="{{this.form_edit.controls.car_number.value}}"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">จังหวัด</label>
+                <select formControlName="provinces" class="form-control">
+                  <option
+                    *ngFor="let item of provinces"
+                    [value]="item.PROVINCE_NAME"
+                  >
+                    {{item.PROVINCE_NAME}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">สีของรถ</label>
+                <input
+                  formControlName="car_color"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ยี่ห้อของรถ</label>
+                <input
+                  formControlName="car_brand"
+                  type="text"
+                  class="form-control text-uppercase"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+                <select formControlName="company_id" class="form-control">
+                  <option
+                    *ngFor="let item of companyApproved"
+                    [value]="item.company_id"
+                  >
+                    {{item.company_name}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รายละเอียดรถ</label>
+                <textarea
+                  formControlName="car_detail"
+                  class="form-control"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="closeModal1"
+            >
+              ยกเลิก
+            </button>
+            <button
+              (click)="onUpdate()"
+              type="button"
+              [disabled]="form_edit.invalid"
+              class="btn btn-success"
+            >
+              อัพเดท
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal2 -->
+    <div
+      class="modal fade"
+      id="staticBackdrop2"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">เพิ่ม ข้อมูลรถ</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="form_add">
+              <div class="form-group">
+                <label for="exampleInputPassword1">ทะเบียนรถ</label>
+                <input
+                  formControlName="car_number"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">จังหวัด</label>
+                <select formControlName="provinces" class="form-control">
+                  <option
+                    *ngFor="let item of provinces"
+                    [value]="item.PROVINCE_NAME"
+                  >
+                    {{item.PROVINCE_NAME}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">สีของรถ</label>
+                <input
+                  formControlName="car_color"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ยี่ห้อของรถ</label>
+                <input
+                  formControlName="car_brand"
+                  type="text"
+                  class="form-control text-uppercase"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+                <select formControlName="company_id" class="form-control">
+                  <option
+                    *ngFor="let item of companyApproved"
+                    [value]="item.company_id"
+                  >
+                    {{item.company_name}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รายละเอียดรถ</label>
+                <textarea
+                  formControlName="car_detail"
+                  class="form-control"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="closeModal2"
+            >
+              ยกเลิก
+            </button>
+            <button
+              (click)="onRegister()"
+              type="button"
+              [disabled]="form_add.invalid"
+              class="btn btn-success"
+            >
+              เพิ่ม
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <ion-fab horizontal="end" vertical="bottom" slot="">
+    <ion-fab-button
+      data-toggle="modal"
+      data-target="#staticBackdrop2"
+      color="success"
+    >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+</ion-content>
