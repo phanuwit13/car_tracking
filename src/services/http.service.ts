@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 })
 export class HttpService {
   // public rootPath: string = 'http://192.168.1.43:3000/api/';
-  public rootPath: string = 'http://localhost:3000/api/';
+  public rootPath: string = 'https://cartracking-service.herokuapp.com/api/';
   constructor(
     private http: HttpClient,
     private router: Router,
