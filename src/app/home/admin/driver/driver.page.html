@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
 
     <ul class="list-group">
       <li class="row boxdatalist" *ngFor="let item of driverApproved">

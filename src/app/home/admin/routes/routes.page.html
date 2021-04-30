@@ -4,7 +4,13 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>เส้นทางการเดินรถ</ion-title>
-    <ion-button [routerLink]="['add']" class="login pr-1" size="small" slot="end" color="success"
+    <ion-button
+      data-toggle="modal"
+      data-target="#staticBackdrop"
+      class="login pr-1"
+      size="small"
+      slot="end"
+      color="success"
       >เพิ่มเส้นทาง</ion-button
     >
   </ion-toolbar>
@@ -12,7 +18,7 @@
 
 <ion-content>
   <div class="container">
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
     <div class="form-group">
       <label for="exampleFormControlSelect1">สถานประกอบการ</label>
       <select #company (change)="getRoute(company.value)" class="form-control">
@@ -33,7 +39,7 @@
           {{item.route_number+" "+item.route_name}}
         </div>
         <button
-        [routerLink]="['edit',item.route_id]"
+          [routerLink]="['edit',item.route_id]"
           data-toggle="modal"
           data-target="#staticBackdropEdit"
           class="col-2 col-md-1 bg-warning d-flex align-items-center text-white text-alingcenter"
@@ -41,7 +47,7 @@
           แก้ไข
         </button>
         <button
-          (click)="deleteCar(item.car_id)"
+          (click)="deleteRoute(item.route_id)"
           class="col-2 col-md-1 bg-danger d-flex align-items-center text-white text-alingcenter"
         >
           ลบ
@@ -50,3 +56,32 @@
     </ul>
   </div>
 </ion-content>
+
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-backdrop="static"
+  data-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">กรุณาเลือก</h5>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="box bg-success" data-dismiss="modal" [routerLink]="['addgo']">ขาไป</div>
+          <div class="box bg-warning" data-dismiss="modal" [routerLink]="['addback']">ขากลับ</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          ปิด
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

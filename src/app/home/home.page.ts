@@ -13,12 +13,18 @@ export class HomePage {
   public map: any;
   public direction = 0;
   public infoWindow = new google.maps.InfoWindow();
+  public carInfo = new google.maps.InfoWindow();
   public userData: Array<any> = [];
   public marker: any;
   public loading: any;
   public roueName: Array<any> = [];
+  public carMarkDisplay: any = [];
   public route_id: any = '001';
+  public carShow: any = [];
+  public myLocation: any = { lat: 14.9736915, lng: 102.0827157 };
+  public showAlert: boolean = false;
   public directionsService = new google.maps.DirectionsService();
+  public distanceMatrixService = new google.maps.DistanceMatrixService();
   public directionsRenderer = new google.maps.DirectionsRenderer({
     suppressMarkers: true,
   });
@@ -30,6 +36,14 @@ export class HomePage {
     strokeOpacity: 1.0,
     strokeWeight: 1,
   });
+  // public carLocation: any = [
+  //   ['กว 2343 นครราชสีมา', 13.784122, 100.481522],
+  //   ['กข 2122 นครราชสีมา', 13.783122, 100.489522],
+  // ];
+  public carLocation: any = [];
+  public carDistance: any = [];
+  public test = [1, 2, 3, 4];
+  public carMark: any;
   constructor(
     private http: HttpService,
     public loadingCtrl: LoadingController
@@ -39,6 +53,33 @@ export class HomePage {
     this.loadmap();
     this.getRoute('001');
     this.getRouteName();
+    this.run();
+  }
+  loadCar() {
+    let i = 0;
+    this.carMarkDisplay = [];
+    console.log(this.carLocation);
+
+    for (i; i < this.carLocation.length; i++) {
+      this.carMark = new google.maps.Marker({
+        position: new google.maps.LatLng(
+          this.carLocation[i][1],
+          this.carLocation[i][2]
+        ),
+        map: this.map,
+        icon: 'assets/icon/car.png',
+      });
+
+      (function (marker, i, location) {
+        google.maps.event.addListener(marker, 'click', function () {
+          let carInfo = new google.maps.InfoWindow({
+            content: location[i][0],
+          });
+          carInfo.open(this.map, marker);
+        });
+      })(this.carMark, i, this.carLocation);
+      this.carMarkDisplay.push(this.carMark);
+    }
   }
   async loadmap() {
     this.loading = await this.loadingCtrl.create({
@@ -56,7 +97,9 @@ export class HomePage {
       map: this.map,
       animation: google.maps.Animation.DROP,
       position: { lat: 14.9736915, lng: 102.0827157 },
+      icon: 'assets/icon/person.png',
     });
+    // this.loadCar();
     this.flightPath.setMap(this.map);
 
     this.loading.dismiss();
@@ -114,22 +157,6 @@ export class HomePage {
             });
             directionsRenderer.setDirections(response);
           }
-         
-          // const route = response.routes[0];
-          // const summaryPanel = document.getElementById(
-          //   "directions-panel"
-          // ) as HTMLElement;
-          // summaryPanel.innerHTML = "";
-
-          // // For each route, display summary information.
-          // for (let i = 0; i < route.legs.length; i++) {
-          //   const routeSegment = i + 1;
-          //   summaryPanel.innerHTML +=
-          //     "<b>Route Segment: " + routeSegment + "</b><br>";
-          //   summaryPanel.innerHTML += route.legs[i].start_address + " to ";
-          //   summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
-          //   summaryPanel.innerHTML += route.legs[i].distance!.text + "<br><br>";
-          // }
         } else {
           window.alert('Directions request failed due to ' + status);
         }
@@ -186,7 +213,7 @@ export class HomePage {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-
+          this.myLocation = pos;
           // this.infoWindow.setPosition(pos);
           // this.infoWindow.setContent("ตำแหน่งของคุณ");
           //this.infoWindow.open(this.map);
@@ -221,6 +248,35 @@ export class HomePage {
       this.testpoint = [];
     }
   };
+  getCarEnable = async (route_id) => {
+    let formData = new FormData();
+    formData.append('route_id', route_id);
+    let data = [];
+    this.carDistance = [];
+    let httpRespone: any = await this.http.post('getcarenable', formData);
+    if (httpRespone.response.success) {
+      this.carShow = httpRespone.response.data;
+      console.log(httpRespone.response.data);
+      httpRespone.response.data.map((value) => {
+        this.carDistance.push({
+          lat: parseFloat(value.lat),
+          lng: parseFloat(value.lng),
+        });
+        data.push([
+          value.car_number + ' ' + value.provinces,
+          parseFloat(value.lat),
+          parseFloat(value.lng),
+        ]);
+      });
+
+      //console.log(this.carLocation);
+    } else {
+      this.carShow = [];
+      this.carDistance = [];
+      console.log(httpRespone.response.message);
+    }
+    return data;
+  };
   setDirection(value) {
     this.direction = value.detail.value;
     this.getRoute(this.route_id);
@@ -236,4 +292,49 @@ export class HomePage {
       this.roueName = null;
     }
   };
+  run() {
+    setInterval(async () => {
+      this.carLocation = await this.getCarEnable(this.route_id);
+      this.DeleteMarkers();
+      // this.loadCar();
+      if (this.carLocation.length > 0) {
+        this.loadCar();
+        // console.log(this.carDistance);
+
+        this.calculateDistance(this.myLocation, this.carDistance);
+        // console.log('โหลด');
+      }
+    }, 3000);
+  }
+  DeleteMarkers() {
+    //Loop through all the markers and remove
+    for (var i = 0; i < this.carMarkDisplay.length; i++) {
+      this.carMarkDisplay[i].setMap(null);
+    }
+    this.carMarkDisplay = [];
+  }
+  setAlert() {
+    this.showAlert = !this.showAlert;
+    console.log(this.showAlert);
+  }
+  calculateDistance(origin1, destination) {
+    this.distanceMatrixService.getDistanceMatrix(
+      {
+        origins: [origin1],
+        destinations: destination,
+        travelMode: 'DRIVING',
+      },
+      (response, status) => {
+        if (status === 'OK') {
+          console.log(response.rows[0].elements);
+          response.rows[0].elements.forEach((value) => {
+            if (value.distance.value < 1000) this.showAlert = true
+            else{
+              console.log('รอไปก่อน')
+            }
+          });
+        }
+      }
+    );
+  }
 }

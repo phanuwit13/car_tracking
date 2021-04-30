@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>เพิ่มเส้นทาง</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="mt-2 container boxmap"><div id="backmap"></div></div>
+  <div class="container">
+    <div class="mt-1">
+      <label for="exampleFormControlSelect1">เส้นทาง</label>
+      <ion-segment
+        scrollable="false"
+        class="mt-1"
+        mode="ios"
+      >
+        <ion-segment-button value="1">
+          <ion-label>กลับ</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <form action="" [formGroup]="form_edit">
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+        <select
+          formControlName="route_id"
+          class="form-control"
+        >
+          <option
+            *ngFor="let item of routeGo"
+            [value]="item.route_id"
+          >
+            {{item.route_name}}
+          </option>
+        </select>
+      </div>
+    </form>
+    <section class="mb-3">
+      <ion-button (click)="submitDirection()" [disabled]="form_edit.invalid" color="success" expand="block"
+        ><b>เพิ่มเส้นทาง</b></ion-button
+      >
+    </section>
+  </div>
+</ion-content>
+

@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 export class DriverPage implements OnInit {
   public driverExp: Array<any> = [];
   public driverApproved: Array<any> = [];
+  public driverData: Array<any> = [];
   public driverPending: Array<any> = [];
   public companyApproved: Array<any> = [];
   public form_register: FormGroup;
@@ -60,6 +61,14 @@ export class DriverPage implements OnInit {
       driver_phone: ['', Validators.required],
     });
   }
+  searchArray(event) {
+    const q = event.target.value;
+    let data = this.driverData;
+    data = data.filter(function (value) {
+      return value.driver_fname.indexOf(q) !== -1 || value.driver_lname.indexOf(q) !== -1; // returns true or false
+    });
+    this.driverApproved = data;
+  }
   getCompany = async () => {
     let formData = new FormData();
     formData.append('status', 'approved');
@@ -81,6 +90,7 @@ export class DriverPage implements OnInit {
       console.log(httpRespone.response.data);
 
       this.driverApproved = httpRespone.response.data;
+      this.driverData = httpRespone.response.data;
     } else {
       this.driverApproved = null;
     }
@@ -173,7 +183,7 @@ export class DriverPage implements OnInit {
           httpRespone.response.message + ' !',
           'success'
         ).then(() => {
-          this.resetForm()
+          this.resetForm();
           document.getElementById('closeModal2').click();
           this.getDriverApproved();
           this.getDriverPending();
@@ -230,6 +240,5 @@ export class DriverPage implements OnInit {
     this.form_register.controls['exd_carcard_id'].setValue('');
     this.form_register.controls['driver_phone'].setValue('');
     this.form_register.controls['status_carcard_id'].setValue(0);
-
   };
 }

@@ -8,6 +8,7 @@ import { Platform } from '@ionic/angular';
   providedIn: 'root',
 })
 export class HttpService {
+  // public rootPath: string = 'http://192.168.1.43:3000/api/';
   public rootPath: string = 'http://localhost:3000/api/';
   constructor(
     private http: HttpClient,

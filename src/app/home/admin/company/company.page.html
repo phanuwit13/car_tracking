@@ -39,7 +39,7 @@
         <div class="col-10 col-md-11">สถานประกอบการที่ปิดการใช้งาน</div>
       </div>
     </div>
-    <ion-searchbar></ion-searchbar>
+    <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
 
     <ul class="list-group">
       <li class="row boxdatalist" *ngFor="let item of companyApproved">

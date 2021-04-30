@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 })
 export class CompanyPage implements OnInit {
   public companyApproved: Array<any> = [];
+  public companyData: Array<any> = [];
   public companyPending: Array<any> = [];
   public form_register: FormGroup;
   public form_edit: FormGroup;
@@ -17,11 +18,11 @@ export class CompanyPage implements OnInit {
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
   ionViewDidEnter() {
     this.getCompanyApproved();
-    this.getCompanyPending()
+    this.getCompanyPending();
   }
   ngOnInit() {
     this.getCompanyApproved();
-    this.getCompanyPending()
+    this.getCompanyPending();
     this.form_edit = this.formBuilder.group({
       driver_id: ['', Validators.required],
       company_id: ['', Validators.required],
@@ -55,7 +56,14 @@ export class CompanyPage implements OnInit {
       status: ['approved', Validators.required],
     });
   }
-
+  searchArray(event) {
+    const q = event.target.value
+    let data = this.companyData;
+    data = data.filter(function (value) {
+      return value.company_name.indexOf(q) !== -1; // returns true or false
+    });
+    this.companyApproved = data
+  }
   getCompanyApproved = async () => {
     let formData = new FormData();
     formData.append('status', 'approved');
@@ -63,8 +71,8 @@ export class CompanyPage implements OnInit {
     let httpRespone: any = await this.http.post('getcompanydata', formData);
     if (httpRespone.response.success) {
       console.log(httpRespone.response.data);
-
       this.companyApproved = httpRespone.response.data;
+      this.companyData = httpRespone.response.data;
     } else {
       this.companyApproved = null;
     }
@@ -119,7 +127,7 @@ export class CompanyPage implements OnInit {
         () => {
           document.getElementById('closeModal').click();
           this.getCompanyApproved();
-    this.getCompanyPending()
+          this.getCompanyPending();
         }
       );
     } else {
@@ -133,7 +141,8 @@ export class CompanyPage implements OnInit {
       this.form_register.controls['status_carcard_id'].setValue(1);
     }
     if (
-      this.form_register.value.password !== this.form_register.value.confirmPassword
+      this.form_register.value.password !==
+      this.form_register.value.confirmPassword
     ) {
       return Swal.fire('ผิดพลาด', 'รหัสผ่านไม่ตรงกัน !', 'error');
     } else {
@@ -154,7 +163,7 @@ export class CompanyPage implements OnInit {
         ).then(() => {
           document.getElementById('closeModal2').click();
           this.getCompanyApproved();
-    this.getCompanyPending()
+          this.getCompanyPending();
         });
       } else {
         Swal.fire('ผิดพลาด', httpRespone.response.message + ' !', 'error');
@@ -183,7 +192,7 @@ export class CompanyPage implements OnInit {
             'success'
           ).then(() => {
             this.getCompanyApproved();
-    this.getCompanyPending()
+            this.getCompanyPending();
           });
         } else {
           Swal.fire('ผิดพลาด', httpRespone.response.message + ' !', 'error');

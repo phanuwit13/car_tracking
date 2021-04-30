@@ -30,13 +30,13 @@ export class DriverPage implements OnInit {
       driver_phone: ['', Validators.required],
     });
     this.getCompany();
-    console.log();
   }
   getCompany = async () => {
     let formData = new FormData();
     formData.append('status', 'approved');
+    formData.append('company_id', '');
     let httpRespone: any = await this.http.post('getcompanydata', formData);
-    // console.log(httpRespon);
+    console.log(httpRespone);
     if (httpRespone.response.success) {
       console.log(httpRespone.response.data);
 

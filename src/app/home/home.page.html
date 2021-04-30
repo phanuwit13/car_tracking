@@ -14,11 +14,28 @@
 </ion-header>
 <ion-content [fullscreen]="true">
   <div class="container pt-3">
+    <div *ngIf="showAlert"  class="alert alert-warning alert-dismissible fade show" role="alert">
+      มีรถสองแถวอยู่ในบริเวณใกล้ๆ
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+        (click)="setAlert()"
+      >
+        <span class="font-custom" aria-hidden="true">&times;</span>
+      </button>
+    </div>
     <div class="row">
       <div class="col-7">
         <div class="form-group">
           <label for="exampleFormControlSelect1">สายของรถ</label>
-          <select [(ngModel)]="route_id" #company (change)="getRoute(company.value)" class="form-control">
+          <select
+            [(ngModel)]="route_id"
+            #company
+            (change)="getRoute(company.value)"
+            class="form-control"
+          >
             <option *ngFor="let item of roueName" [value]="item.route_id">
               {{item.route_number+' : '+item.route_name}}
             </option>
@@ -27,7 +44,13 @@
       </div>
       <div class="col-5">
         <label for="exampleFormControlSelect1">เส้นทาง</label>
-        <ion-segment value={{this.direction}} (ionChange)="setDirection($event)" scrollable='false'  class="mt-1" mode='ios'>
+        <ion-segment
+          value="{{this.direction}}"
+          (ionChange)="setDirection($event)"
+          scrollable="false"
+          class="mt-1"
+          mode="ios"
+        >
           <ion-segment-button value="0">
             <ion-label>ไป</ion-label>
           </ion-segment-button>
@@ -39,7 +62,7 @@
     </div>
   </div>
   <!-- <div id="map"></div> -->
-  <div class=" container boxmap"><div id="map"></div></div>
+  <div class="container boxmap"><div id="map"></div></div>
   <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="small">phanuw</ion-title>
@@ -54,5 +77,84 @@
         ><b>ตำแหน่งของฉัน</b></ion-button
       >
     </section>
+    <div class="mt-4">
+      <ion-title class="ml-0 pl-0" *ngIf="carShow.length > 0"
+        >รถที่กำลังให้บริการ</ion-title
+      >
+    </div>
+    <div class="container mb-3 mt-1">
+      <ul class="list-group accordion">
+        <li
+          class="list-company"
+          id="accordionExample"
+          *ngFor="let item of carShow"
+        >
+          <div class="row boxdatalist">
+            <div class="col-8 d-flex align-items-center">
+              {{item.car_number + " " +item.provinces}}
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-end">
+              <span>{{item.car_color}}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <!-- <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>เบอร์รถ</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1-33</td>
+          <td>5:00</td>
+          <td>6:45</td>
+          <td>8:42</td>
+          <td>10:42</td>
+          <td>12:42</td>
+          <td>14:42</td>
+          <td>16:42</td>
+        </tr>
+        <tr>
+          <td>1-33</td>
+          <td>5:00</td>
+          <td>6:45</td>
+          <td>8:42</td>
+          <td>10:42</td>
+          <td>12:42</td>
+          <td>14:42</td>
+          <td>16:42</td>
+        </tr>
+        <tr>
+          <td>1-33</td>
+          <td>5:00</td>
+          <td>6:45</td>
+          <td>8:42</td>
+          <td>10:42</td>
+          <td>12:42</td>
+          <td>14:42</td>
+          <td>16:42</td>
+        </tr>
+        <tr>
+          <td>1-33</td>
+          <td>5:00</td>
+          <td>6:45</td>
+          <td>8:42</td>
+          <td>10:42</td>
+          <td>12:42</td>
+          <td>14:42</td>
+          <td>16:42</td>
+        </tr>
+      </tbody>
+    </table> -->
   </div>
 </ion-content>

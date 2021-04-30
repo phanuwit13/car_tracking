@@ -11,10 +11,11 @@ declare var require: any;
 export class CarPage implements OnInit {
   public provinces: Array<any> = require('../../../../services/province/province.json');
   public carData: Array<any>;
+  public carRaw: Array<any>;
   public companyApproved: Array<any> = [];
   public form_add: FormGroup;
   public form_edit: FormGroup;
-
+  public route :Array<any>
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -27,6 +28,7 @@ export class CarPage implements OnInit {
       car_color: ['', Validators.required],
       car_brand: ['', Validators.required],
       car_detail: [''],
+      route_id: ['', Validators.required],
       company_id: ['', Validators.required],
     });
     this.form_edit = this.formBuilder.group({
@@ -36,9 +38,33 @@ export class CarPage implements OnInit {
       car_color: ['', Validators.required],
       car_brand: ['', Validators.required],
       car_detail: [''],
+      route_id: ['', Validators.required],
       company_id: ['', Validators.required],
     });
   }
+  searchArray(event) {
+    const q = event.target.value;
+    let data = this.carRaw;
+    data = data.filter(function (value) {
+      return (
+        value.car_number.indexOf(q) !== -1 || value.provinces.indexOf(q) !== -1
+      ); // returns true or false
+    });
+    this.carData = data;
+  }
+  getRoute = async (value) => {
+    console.log(value);
+    this.form_add.controls['route_id'].setValue('');
+    let formData = new FormData();
+    formData.append('company_id', value);
+    let httpRespone: any = await this.http.post('getrouteselect', formData);
+    console.log(httpRespone.response);
+    if (httpRespone.response.success) {
+      this.route = httpRespone.response.data;
+    } else {
+      this.route = null;
+    }
+  };
   getCar = async (value) => {
     console.log(value);
 
@@ -48,6 +74,7 @@ export class CarPage implements OnInit {
     // console.log(httpRespon);
     if (httpRespone.response.success) {
       this.carData = httpRespone.response.data;
+      this.carRaw = httpRespone.response.data;
     } else {
       this.carData = null;
     }
@@ -164,8 +191,10 @@ export class CarPage implements OnInit {
     this.form_add.controls['car_brand'].setValue('');
     this.form_add.controls['car_detail'].setValue('');
     this.form_add.controls['company_id'].setValue('');
+    this.form_add.controls['route_id'].setValue('');
   };
   setDriverEdit = (value) => {
+    this.getRoute(value.company_id)
     this.form_edit.controls['car_id'].setValue(value.car_id);
     this.form_edit.controls['car_number'].setValue(value.car_number);
     this.form_edit.controls['provinces'].setValue(value.provinces);
@@ -173,5 +202,9 @@ export class CarPage implements OnInit {
     this.form_edit.controls['car_brand'].setValue(value.car_brand);
     this.form_edit.controls['car_detail'].setValue(value.car_detail);
     this.form_edit.controls['company_id'].setValue(value.company_id);
+    this.form_edit.controls['route_id'].setValue(value.route_id);
   };
+  clearRoute(){
+    this.route =[]
+  }
 }
