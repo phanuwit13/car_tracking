@@ -11,13 +11,14 @@ declare var require: any;
 export class CarPage implements OnInit {
   public provinces: Array<any> = require('../../../../services/province/province.json');
   public carData: Array<any>;
-  public carRaw :Array<any>
+  public carRaw: Array<any>;
   public companyApproved: Array<any> = [];
   public form_add: FormGroup;
   public form_edit: FormGroup;
   public company_id: any;
   public company_name: any;
-  public route :any;
+  public route: any;
+  public route_company_id: any;
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
@@ -25,7 +26,7 @@ export class CarPage implements OnInit {
     this.company_id = this.http.localStorage.get('user').company_id;
     this.getCar(this.company_id);
     this.getCompany(this.company_id);
-    this.getRoute(this.company_id)
+    this.getCarRouteCompany(this.company_id);
     this.form_add = this.formBuilder.group({
       car_number: ['', Validators.required],
       provinces: ['', Validators.required],
@@ -56,11 +57,25 @@ export class CarPage implements OnInit {
     });
     this.carData = data;
   }
-  getRoute = async (value) => {
+  getCarRouteCompany = async (value) => {
     console.log(value);
 
     let formData = new FormData();
     formData.append('company_id', value);
+    let httpRespone: any = await this.http.post('getcarroutecompany', formData);
+    console.log(httpRespone.response);
+    if (httpRespone.response.success) {
+      this.route_company_id = httpRespone.response.data[0].route_company_id;
+      this.getRoute(this.route_company_id);
+    } else {
+      this.route_company_id = null;
+    }
+  };
+  getRoute = async (value) => {
+    console.log(value);
+
+    let formData = new FormData();
+    formData.append('route_company_id', value);
     let httpRespone: any = await this.http.post('getrouteselect', formData);
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
@@ -78,7 +93,7 @@ export class CarPage implements OnInit {
     // console.log(httpRespon);
     if (httpRespone.response.success) {
       this.carData = httpRespone.response.data;
-      this.carRaw =  httpRespone.response.data;
+      this.carRaw = httpRespone.response.data;
     } else {
       this.carData = null;
     }
@@ -90,7 +105,7 @@ export class CarPage implements OnInit {
     let httpRespone: any = await this.http.post('getcompanydata', formData);
     // console.log(httpRespon);
     if (httpRespone.response.success) {
-      this.company_name=httpRespone.response.data[0].company_name;
+      this.company_name = httpRespone.response.data[0].company_name;
     } else {
       this.company_name = null;
     }
@@ -143,7 +158,7 @@ export class CarPage implements OnInit {
           document.getElementById('closeModal2').click();
           this.getCar(this.company_id);
           this.getCompany(this.company_id);
-          this.getRoute(this.company_id)
+          this.getCarRouteCompany(this.company_id);
         }
       );
     } else {
@@ -179,6 +194,7 @@ export class CarPage implements OnInit {
             document.getElementById('closeModal1').click();
             this.getCar(this.company_id);
             this.getCompany(this.company_id);
+            this.getCarRouteCompany(this.company_id);
           });
         } else {
           Swal.fire('ผิดพลาด', httpRespone.response.message + ' !', 'error');
@@ -197,6 +213,7 @@ export class CarPage implements OnInit {
     this.form_add.controls['route_id'].setValue('');
   };
   setDriverEdit = (value) => {
+    console.log(value);
     this.form_edit.controls['car_id'].setValue(value.car_id);
     this.form_edit.controls['car_number'].setValue(value.car_number);
     this.form_edit.controls['provinces'].setValue(value.provinces);

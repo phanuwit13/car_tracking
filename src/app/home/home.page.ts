@@ -18,6 +18,7 @@ export class HomePage {
   public marker: any;
   public loading: any;
   public roueName: Array<any> = [];
+  public getRouteCompanyData: Array<any> = [];
   public carMarkDisplay: any = [];
   public route_id: any = '001';
   public carShow: any = [];
@@ -58,7 +59,7 @@ export class HomePage {
   loadCar() {
     let i = 0;
     this.carMarkDisplay = [];
-    console.log(this.carLocation);
+    // console.log(this.carLocation);
 
     for (i; i < this.carLocation.length; i++) {
       this.carMark = new google.maps.Marker({
@@ -92,7 +93,7 @@ export class HomePage {
       center: { lat: 14.9736915, lng: 102.0827157 },
     });
     this.directionsRenderer.setMap(this.map);
-    console.log(this.testpoint[0].lat);
+    // console.log(this.testpoint[0].lat);
     this.marker = await new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
@@ -256,7 +257,7 @@ export class HomePage {
     let httpRespone: any = await this.http.post('getcarenable', formData);
     if (httpRespone.response.success) {
       this.carShow = httpRespone.response.data;
-      console.log(httpRespone.response.data);
+      // console.log(httpRespone.response.data);
       httpRespone.response.data.map((value) => {
         this.carDistance.push({
           lat: parseFloat(value.lat),
@@ -273,7 +274,7 @@ export class HomePage {
     } else {
       this.carShow = [];
       this.carDistance = [];
-      console.log(httpRespone.response.message);
+      // console.log(httpRespone.response.message);
     }
     return data;
   };
@@ -283,8 +284,9 @@ export class HomePage {
   }
   getRouteName = async () => {
     let formData = new FormData();
-    formData.append('company_id', '');
+    formData.append('route_company_id', '');
     let httpRespone: any = await this.http.post('getrouteselect', formData);
+    // console.log(httpRespone);
     if (httpRespone.response.success) {
       // console.log(httpRespone.response.data);
       this.roueName = httpRespone.response.data;
@@ -292,6 +294,17 @@ export class HomePage {
       this.roueName = null;
     }
   };
+  // getRouteCompany = async () => {
+  //   let httpRespone: any = await this.http.post('getroutecompany');
+  //   let com = { route_company_id: '', route_number: 'กรุณาเลือก' };
+  //   console.log(httpRespone.response);
+  //   if (httpRespone.response.success) {
+  //     this.getRouteCompanyData = httpRespone.response.data;
+  //     this.getRouteCompanyData.unshift(com);
+  //   } else {
+  //     this.getRouteCompanyData = [];
+  //   }
+  // };
   run() {
     setInterval(async () => {
       this.carLocation = await this.getCarEnable(this.route_id);
@@ -315,7 +328,7 @@ export class HomePage {
   }
   setAlert() {
     this.showAlert = !this.showAlert;
-    console.log(this.showAlert);
+    // console.log(this.showAlert);
   }
   calculateDistance(origin1, destination) {
     this.distanceMatrixService.getDistanceMatrix(
@@ -326,11 +339,11 @@ export class HomePage {
       },
       (response, status) => {
         if (status === 'OK') {
-          console.log(response.rows[0].elements);
+          // console.log(response.rows[0].elements);
           response.rows[0].elements.forEach((value) => {
             if (value.distance.value < 1000) this.showAlert = true
             else{
-              console.log('รอไปก่อน')
+              // console.log('รอไปก่อน')
             }
           });
         }

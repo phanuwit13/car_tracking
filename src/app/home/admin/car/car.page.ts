@@ -52,17 +52,35 @@ export class CarPage implements OnInit {
     });
     this.carData = data;
   }
+  getCarRouteCompany = async (value) => {
+    console.log(value);
+    this.form_add.controls['route_id'].setValue('');
+    this.form_edit.controls['route_id'].setValue('');
+    let formData = new FormData();
+    formData.append('company_id', value);
+    let httpRespone: any = await this.http.post('getcarroutecompany', formData);
+    console.log(httpRespone.response);
+    if (httpRespone.response.success) {
+      // this.route_company_id = httpRespone.response.data[0].route_company_id;
+      this.getRoute(httpRespone.response.data[0].route_company_id);
+    } else {
+      // this.route_company_id = null;
+      this.route = [];
+    }
+  };
   getRoute = async (value) => {
     console.log(value);
     this.form_add.controls['route_id'].setValue('');
     let formData = new FormData();
-    formData.append('company_id', value);
+    formData.append('route_company_id', value);
     let httpRespone: any = await this.http.post('getrouteselect', formData);
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.route = httpRespone.response.data;
     } else {
-      this.route = null;
+      this.route = [];
+      console.log(this.route);
+      
     }
   };
   getCar = async (value) => {
@@ -194,7 +212,7 @@ export class CarPage implements OnInit {
     this.form_add.controls['route_id'].setValue('');
   };
   setDriverEdit = (value) => {
-    this.getRoute(value.company_id)
+    this.getCarRouteCompany(value.company_id)
     this.form_edit.controls['car_id'].setValue(value.car_id);
     this.form_edit.controls['car_number'].setValue(value.car_number);
     this.form_edit.controls['provinces'].setValue(value.provinces);

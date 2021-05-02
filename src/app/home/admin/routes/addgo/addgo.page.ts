@@ -14,7 +14,7 @@ export class AddgoPage implements OnInit {
   public route_id;
   public loading: any;
   public form_edit: FormGroup;
-  public companyApproved: any;
+  public getRouteCompanyData: any;
   public directionsService = new google.maps.DirectionsService();
   public directionsRenderer = new google.maps.DirectionsRenderer({
     suppressMarkers: false,
@@ -49,28 +49,38 @@ export class AddgoPage implements OnInit {
 
   ngOnInit() {
     this.loadmap();
-    this.getCompany();
+    this.getRouteCompany();
     this.calculateAndDisplayRoute(
       this.directionsService,
       this.directionsRenderer
     );
     this.form_edit = this.formBuilder.group({
       route_name: ['', Validators.required],
-      route_number: ['', Validators.required],
+      // route_number: ['', Validators.required],
       route_price: ['', Validators.required],
-      company_id: ['', Validators.required],
+      route_company_id: ['', Validators.required],
+      // company_id: ['', Validators.required],
     });
   }
-  getCompany = async () => {
-    let formData = new FormData();
-    formData.append('status', 'approved');
-    formData.append('company_id', '');
-    let httpRespone: any = await this.http.post('getcompanydata', formData);
-    console.log(httpRespone.response.data);
+  // getCompany = async () => {
+  //   let formData = new FormData();
+  //   formData.append('status', 'approved');
+  //   formData.append('company_id', '');
+  //   let httpRespone: any = await this.http.post('getcompanydata', formData);
+  //   console.log(httpRespone.response.data);
+  //   if (httpRespone.response.success) {
+  //     this.companyApproved = httpRespone.response.data;
+  //   } else {
+  //     this.companyApproved = null;
+  //   }
+  // };
+  getRouteCompany = async () => {
+    let httpRespone: any = await this.http.post('getroutecompany');
+    console.log(httpRespone.response);
     if (httpRespone.response.success) {
-      this.companyApproved = httpRespone.response.data;
+      this.getRouteCompanyData = httpRespone.response.data;
     } else {
-      this.companyApproved = null;
+      this.getRouteCompanyData = [];
     }
   };
   submitDirection = async () => {

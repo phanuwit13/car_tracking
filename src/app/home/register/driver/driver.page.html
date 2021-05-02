@@ -8,47 +8,51 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="container">
+  <div class="container mb-3">
     <div class="boxlogin">
       <img src="assets/img/driver.png" />
     </div>
     <form [formGroup]="form_register">
-      <!-- <div class="form-group">
-        <label for="exampleInputEmail1">ชื่อผู้ใช้</label>
-        <input
-          formControlName="username"
-          type="text"
-          class="form-control"
-          aria-describedby="emailHelp"
-        />
-      </div> -->
       <div class="form-group">
-        <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+        <label for="exampleInputPassword1">หมายเลขบัตรประจำตัวประชาชน</label>
         <input
           formControlName="identification_id"
           type="text"
           class="form-control"
+          maxlength="13"
         />
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
-        <input formControlName="carcard_id" type="text" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
+        <label for="exampleInputPassword1">รหัสผ่าน</label>
         <input
-          formControlName="exd_carcard_id"
+          formControlName="password"
+          type="password"
           class="form-control"
-          type="date"
-          id="example-date-input"
         />
+      </div>
+
+      <div class="form-group">
+        <label for="exampleInputPassword1">ยืนยันรหัสผ่าน</label>
+        <input
+          formControlName="confirmPassword"
+          type="password"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+        <select formControlName="company_id" class="form-control">
+          <option
+            *ngFor="let item of companyApproved"
+            [value]="item.company_id"
+          >
+            {{item.company_name}}
+          </option>
+        </select>
       </div>
       <div class="form-group">
         <label for="exampleFormControlSelect1">คำนำหน้า</label>
-        <select
-          formControlName="driver_title"
-          class="form-control"
-        >
+        <select formControlName="driver_title" class="form-control">
           <option *ngFor="let item of titleName" [value]="item">
             {{item}}
           </option>
@@ -70,17 +74,28 @@
           class="form-control"
         />
       </div>
+
       <div class="form-group">
-        <label for="exampleFormControlSelect1">สถานประกอบการ</label>
-        <select
-          formControlName="company_id"
+        <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่รถยนต์</label>
+        <input
+          formControlName="carcard_id"
+          type="text"
           class="form-control"
-        >
-          <option *ngFor="let item of companyApproved" [value]="item.company_id">
-            {{item.company_name}}
-          </option>
-        </select>
+          maxlength="8"
+        />
       </div>
+      <div class="form-group">
+        <label for="example-date-input"
+          >วันสิ้นอายุเลขที่ใบอนุญาตขับขี่รถยนต์</label
+        >
+        <input
+          formControlName="exd_carcard_id"
+          class="form-control"
+          type="date"
+          id="example-date-input"
+        />
+      </div>
+
       <div class="form-group">
         <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
         <input
@@ -89,23 +104,7 @@
           class="form-control"
         />
       </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">รหัสผ่าน</label>
-        <input
-          formControlName="password"
-          type="password"
-          class="form-control"
-        />
-      </div>
 
-      <div class="form-group">
-        <label for="exampleInputPassword1">ยืนยันรหัสผ่าน</label>
-        <input
-          formControlName="confirmPassword"
-          type="password"
-          class="form-control"
-        />
-      </div>
       <section>
         <ion-button
           color="success"

@@ -32,25 +32,25 @@
         <label for="exampleInputPassword1">ชื่อเส้นทาง</label>
         <input formControlName="route_name" type="text" class="form-control" />
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label for="exampleInputPassword1">หมายเลขเส้นทาง</label>
         <input formControlName="route_number" type="text" class="form-control" />
-      </div>
+      </div> -->
       <div class="form-group">
         <label for="exampleInputPassword1">ค่าโดยสาร</label>
         <input formControlName="route_price" type="text" class="form-control" />
       </div>
       <div class="form-group">
-        <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+        <label for="exampleFormControlSelect1">หมายเลขเส้นทาง</label>
         <select
-          formControlName="company_id"
+          formControlName="route_company_id"
           class="form-control"
         >
           <option
-            *ngFor="let item of companyApproved"
-            [value]="item.company_id"
+            *ngFor="let item of getRouteCompanyData"
+            [value]="item.route_company_id"
           >
-            {{item.company_name}}
+            สายที่ {{item.route_number}}
           </option>
         </select>
       </div>

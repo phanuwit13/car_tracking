@@ -45,38 +45,11 @@
         >
           <div class="card-body">
             <form>
-              <!-- <div class="form-group">
-                <label for="exampleInputEmail1">ชื่อผู้ใช้</label>
-                <input
-                  formControlName="username"
-                  type="text"
-                  class="form-control"
-                  aria-describedby="emailHelp"
-                />
-              </div> -->
               <div class="form-group">
-                <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
-                <input
-                  disabled
-                  value="{{item.company_name}}"
-                  type="text"
-                  class="form-control"
-                />
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+                <label for="exampleInputPassword1">หมายเลขบัตรประจำตัวประชาชน</label>
                 <input
                   disabled
                   value="{{item.identification_id}}"
-                  type="text"
-                  class="form-control"
-                />
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">เลขที่ใบขับขี่</label>
-                <input
-                  disabled
-                  value="{{item.carcard_id}}"
                   type="text"
                   class="form-control"
                 />
@@ -109,14 +82,23 @@
                 />
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">ที่อยู่สถานประกอบการ</label>
-                <textarea
+                <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
+                <input
                   disabled
-                  value="{{item.company_address}}"
+                  value="{{item.company_name}}"
                   type="text"
                   class="form-control"
-                  rows="4"
-                ></textarea>
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่รถยนต์</label>
+                <input
+                  disabled
+                  value="{{item.carcard_id}}"
+                  type="text"
+                  class="form-control"
+                />
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
@@ -126,6 +108,16 @@
                   type="text"
                   class="form-control"
                 />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ที่อยู่สถานประกอบการ</label>
+                <textarea
+                  disabled
+                  value="{{item.company_address}}"
+                  type="text"
+                  class="form-control"
+                  rows="4"
+                ></textarea>
               </div>
             </form>
           </div>

@@ -24,6 +24,7 @@ export class DriverPage implements OnInit {
     this.getDriverApproved();
     this.getDriverPending();
     // this.getDriverExp();
+    this.getDriverExp(this.company_id);
     this.getCompany(this.company_id);
   }
   ngOnInit() {
@@ -32,6 +33,7 @@ export class DriverPage implements OnInit {
     this.getDriverApproved();
     this.getDriverPending();
     // this.getDriverExp();
+    this.getDriverExp(this.company_id);
     this.getCompany(this.company_id);
 
     this.form_edit = this.formBuilder.group({
@@ -100,6 +102,18 @@ export class DriverPage implements OnInit {
       this.driverApproved = null;
     }
   };
+  getDriverExp = async (value) => {
+    let formData = new FormData();
+    formData.append('company_id', value);
+    let httpRespone: any = await this.http.post('getloseexduser',formData);
+    if (httpRespone.response.success) {
+      console.log(httpRespone.response.data);
+
+      this.driverExp = httpRespone.response.data;
+    } else {
+      this.driverExp = null;
+    }
+  };
   getDriverPending = async () => {
     let formData = new FormData();
     formData.append('status', 'pending');
@@ -160,6 +174,7 @@ export class DriverPage implements OnInit {
           document.getElementById('closeModal').click();
           this.getDriverApproved();
           this.getDriverPending();
+          this.getDriverExp(this.company_id);
           // this.getDriverExp();
         }
       );
@@ -193,6 +208,7 @@ export class DriverPage implements OnInit {
           document.getElementById('closeModal2').click();
           this.getDriverApproved();
           this.getDriverPending();
+          this.getDriverExp(this.company_id);
           // this.getDriverExp();
         });
       } else {
@@ -221,6 +237,7 @@ export class DriverPage implements OnInit {
             httpRespone.response.message + ' !',
             'success'
           ).then(() => {
+            this.getDriverExp(this.company_id);
             this.getDriverApproved();
             this.getDriverPending();
             // this.getDriverExp();

@@ -19,11 +19,15 @@
 <ion-content>
   <div class="container">
     <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
-    <div class="form-group">
-      <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+    <div class="form-group mt-2">
+      <label for="exampleFormControlSelect1">หมายเลขเส้นทาง</label>
       <select #company (change)="getRoute(company.value)" class="form-control">
-        <option *ngFor="let item of companyApproved" [value]="item.company_id">
-          {{item.company_name}}
+        <option
+          *ngFor="let item of getRouteCompanyData"
+          [value]="item.route_company_id"
+        >
+          {{item.route_company_id ? 'สายที '+item.route_number : item.route_number}}
+          <!-- {{item.route_number}} -->
         </option>
       </select>
       <!-- <section>
@@ -36,7 +40,7 @@
     <ul class="list-group">
       <li class="row boxdatalist" *ngFor="let item of routeData">
         <div class="col-8 col-md-10 d-flex align-items-center">
-          {{item.route_number+" "+item.route_name}}
+          {{item.route_number+" : "+item.route_name}}
         </div>
         <button
           [routerLink]="['edit',item.route_id]"
@@ -73,8 +77,20 @@
       </div>
       <div class="modal-body">
         <div class="container">
-          <div class="box bg-success" data-dismiss="modal" [routerLink]="['addgo']">ขาไป</div>
-          <div class="box bg-warning" data-dismiss="modal" [routerLink]="['addback']">ขากลับ</div>
+          <div
+            class="box bg-success"
+            data-dismiss="modal"
+            [routerLink]="['addgo']"
+          >
+            ขาไป
+          </div>
+          <div
+            class="box bg-warning"
+            data-dismiss="modal"
+            [routerLink]="['addback']"
+          >
+            ขากลับ
+          </div>
         </div>
       </div>
       <div class="modal-footer">

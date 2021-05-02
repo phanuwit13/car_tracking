@@ -15,6 +15,10 @@ const routes: Routes = [
   {
     path: 'reject',
     loadChildren: () => import('./reject/reject.module').then( m => m.RejectPageModule)
+  },
+  {
+    path: 'exp',
+    loadChildren: () => import('./exp/exp.module').then( m => m.ExpPageModule)
   }
 ];
 

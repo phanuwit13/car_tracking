@@ -23,6 +23,10 @@ const routes: Routes = [
   {
     path: 'routes',
     loadChildren: () => import('./routes/routes.module').then( m => m.RoutesPageModule)
+  },
+  {
+    path: 'number-route',
+    loadChildren: () => import('./number-route/number-route.module').then( m => m.NumberRoutePageModule)
   }
 ];
 

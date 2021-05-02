@@ -10,10 +10,12 @@ import Swal from 'sweetalert2';
 export class ExpPage implements OnInit {
   public driverExp: Array<any> = [];
   public form_edit: FormGroup;
+  public company_id: any;
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.getDriverExp();
+    this.company_id = this.http.localStorage.get('user').company_id;
+    this.getDriverExp(this.company_id);
     this.form_edit = this.formBuilder.group({
       driver_title: ['', Validators.required],
       password: ['', Validators.required],
@@ -30,9 +32,9 @@ export class ExpPage implements OnInit {
       driver_id: ['', Validators.required],
     });
   }
-  getDriverExp = async () => {
+  getDriverExp = async (value) => {
     let formData = new FormData();
-    formData.append('company_id', '');
+    formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getloseexduser',formData);
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
@@ -91,7 +93,7 @@ export class ExpPage implements OnInit {
             httpRespone.response.message + ' !',
             'success'
           ).then(() => {
-            this.getDriverExp();
+            this.getDriverExp(this.company_id);
             document.getElementById('closeexp').click()
           });
         } else {

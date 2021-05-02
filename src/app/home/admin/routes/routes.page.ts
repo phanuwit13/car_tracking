@@ -11,6 +11,7 @@ export class RoutesPage implements OnInit {
   public routeData: Array<any>;
   public routeRaw: Array<any>;
   public companyApproved: Array<any> = [];
+  public getRouteCompanyData: Array<any> = [];
   public form_add: FormGroup;
   public form_edit: FormGroup;
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
@@ -21,12 +22,12 @@ export class RoutesPage implements OnInit {
   ngOnInit() {
     this.getRoute('');
     this.getCompany();
+    this.getRouteCompany()
   }
   getRoute = async (value) => {
     console.log(value);
-
     let formData = new FormData();
-    formData.append('company_id', value);
+    formData.append('route_company_id', value);
     let httpRespone: any = await this.http.post('getrouteselect', formData);
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
@@ -34,6 +35,18 @@ export class RoutesPage implements OnInit {
       this.routeRaw= httpRespone.response.data;
     } else {
       this.routeData = null;
+    }
+  };
+
+  getRouteCompany = async () => {
+    let httpRespone: any = await this.http.post('getroutecompany');
+    let com = { route_company_id: '', route_number: 'กรุณาเลือก' };
+    console.log(httpRespone.response);
+    if (httpRespone.response.success) {
+      this.getRouteCompanyData = httpRespone.response.data;
+      this.getRouteCompanyData.unshift(com);
+    } else {
+      this.getRouteCompanyData = [];
     }
   };
   searchArray(event) {

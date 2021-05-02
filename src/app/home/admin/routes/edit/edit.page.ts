@@ -15,6 +15,7 @@ export class EditPage implements OnInit {
   public loading: any;
   public form_edit: FormGroup;
   public companyApproved: any;
+  getRouteCompanyData: Array<any> = [];
   public directionsService = new google.maps.DirectionsService();
   public directionsRenderer = new google.maps.DirectionsRenderer({
     suppressMarkers: false,
@@ -46,28 +47,37 @@ export class EditPage implements OnInit {
     this.getRoute(this.route_id);
     this.getRouteEdit(this.route_id);
     this.loadmap();
-    this.getCompany();
+    this.getRouteCompany();
     this.form_edit = this.formBuilder.group({
       route_name: ['', Validators.required],
       route_id: ['', Validators.required],
-      route_number: ['', Validators.required],
+      // route_number: ['', Validators.required],
       route_price: ['', Validators.required],
-      company_id: ['', Validators.required],
+      route_company_id: ['', Validators.required],
       position: ['', Validators.required],
     });
   }
-  getCompany = async () => {
-    let formData = new FormData();
-    formData.append('status', 'approved');
-    formData.append('company_id', '');
-    let httpRespone: any = await this.http.post('getcompanydata', formData);
-    console.log(httpRespone.response.data);
+  getRouteCompany = async () => {
+    let httpRespone: any = await this.http.post('getroutecompany');
+    console.log(httpRespone.response);
     if (httpRespone.response.success) {
-      this.companyApproved = httpRespone.response.data;
+      this.getRouteCompanyData = httpRespone.response.data;
     } else {
-      this.companyApproved = null;
+      this.getRouteCompanyData = [];
     }
   };
+  // getCompany = async () => {
+  //   let formData = new FormData();
+  //   formData.append('status', 'approved');
+  //   formData.append('company_id', '');
+  //   let httpRespone: any = await this.http.post('getcompanydata', formData);
+  //   console.log(httpRespone.response.data);
+  //   if (httpRespone.response.success) {
+  //     this.companyApproved = httpRespone.response.data;
+  //   } else {
+  //     this.companyApproved = null;
+  //   }
+  // };
   setDirection(value) {
     this.direction = value.detail.value;
     this.getRoute(this.route_id);
@@ -183,9 +193,9 @@ export class EditPage implements OnInit {
   setRouteEdit = (value) => {
     this.form_edit.controls['route_name'].setValue(value.route_name);
     this.form_edit.controls['route_id'].setValue(value.route_id);
-    this.form_edit.controls['route_number'].setValue(value.route_number);
+    // this.form_edit.controls['route_number'].setValue(value.route_number);
     this.form_edit.controls['route_price'].setValue(value.route_price);
-    this.form_edit.controls['company_id'].setValue(value.company_id);
+    this.form_edit.controls['route_company_id'].setValue(value.route_company_id);
   };
   calculateAndDisplayRoute = (
     directionsService: any,

@@ -5,8 +5,8 @@
     </ion-buttons>
     <ion-title>พนักงานขับรถ</ion-title>
     <ion-button
-    data-toggle="modal"
-    data-target="#staticBackdrop2"
+      data-toggle="modal"
+      data-target="#staticBackdrop2"
       class="login pr-1"
       size="small"
       slot="end"
@@ -39,19 +39,19 @@
         <div class="col-10 col-md-11">พนักงานขับรถที่ปิดการใช้งาน</div>
       </div>
     </div>
-    <!-- <div class="box-newcompany">
+    <div class="box-newcompany">
       <div [routerLink]="['exp']" class="row company-list">
         <div class="col-2 col-md-1">
           <img src="assets/icon/question.png" alt="" />
         </div>
         <div class="col-10 col-md-11">
-          พนักงานที่ใบอนุญาติขับขี่หมดอายุ
+          พนักงานที่ใบอนุญาตขับขี่หมดอายุ
           <span *ngIf="this.driverExp" class="notify-badge"
             >{{this.driverExp.length}}</span
           >
         </div>
       </div>
-    </div> -->
+    </div>
     <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
 
     <ul class="list-group">
@@ -122,13 +122,14 @@
                 />
               </div>
               <div class="form-group">
-                <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
+                <label for="example-date-input"
+                  >วันสิ้นอายุเลขที่ใบอนุญาตขับขี่รถยนต์</label
+                >
                 <input
-                  disabled
-                  value="{{this.form_edit.controls.exd_carcard_id.value}}"
+                  formControlName="exd_carcard_id"
                   class="form-control"
                   type="date"
-                  id="example-date-input"
+                  id="example-date-input1"
                 />
               </div>
               <div class="form-group">
@@ -300,7 +301,7 @@
               <label for="exampleInputPassword1">สถานประกอบการ</label>
               <input
                 disabled
-                value={{this.company_name}}
+                value="{{this.company_name}}"
                 type="text"
                 class="form-control"
               />

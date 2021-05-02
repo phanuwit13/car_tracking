@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <!-- <ion-back-button></ion-back-button> -->
     </ion-buttons>
     <ion-title>สถานประกอบการ</ion-title>
     <ion-button
@@ -29,8 +29,8 @@
       <div class="col-12 col-md-6 box-regis" [routerLink]="['driver']">
         <div class="card-regis">
           <div class="card-regis">
-            <span *ngIf="this.driverPending.length !==0 " class="notify-badge"
-              >{{this.driverPending.length}}</span
+            <span *ngIf="this.driverPending.length +this.driverExp.length  !==0 " class="notify-badge"
+              >{{this.driverPending.length+this.driverExp.length }}</span
             >
             <img class="box-img" src="assets/img/driver.png" alt="" />
           </div>

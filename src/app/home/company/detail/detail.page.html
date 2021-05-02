@@ -34,15 +34,9 @@
       <div class="col-12">
         <form action="" [formGroup]="form_edit">
           <div class="form-group">
-            <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
-            <input
-              formControlName="company_name"
-              type="text"
-              class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+            <label for="exampleInputPassword1"
+              >หมายเลขบัตรประจำตัวประชาชน</label
+            >
             <input
               value="{{this.form_edit.value.identification_id}}"
               disabled
@@ -51,21 +45,11 @@
             />
           </div>
           <div class="form-group">
-            <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
+            <label for="exampleInputPassword1">รหัสผ่าน</label>
             <input
-              value="{{this.form_edit.value.carcard_id}}"
-              disabled
-              type="text"
+              formControlName="password"
+              type="password"
               class="form-control"
-            />
-          </div>
-          <div class="form-group">
-            <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
-            <input
-              formControlName="exd_carcard_id"
-              class="form-control"
-              type="date"
-              id="example-date-input"
             />
           </div>
           <div class="form-group">
@@ -93,13 +77,34 @@
             />
           </div>
           <div class="form-group">
-            <label for="exampleInputPassword1">ที่อยู่สถานประกอบการ</label>
-            <textarea
-              formControlName="company_address"
+            <label for="exampleInputPassword1">ชื่อสถานประกอบการ</label>
+            <input
+              formControlName="company_name"
               type="text"
               class="form-control"
-              rows="4"
-            ></textarea>
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1"
+              >เลขที่ใบอนุญาตขับขี่รถยนต์</label
+            >
+            <input
+              value="{{this.form_edit.value.carcard_id}}"
+              disabled
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="example-date-input"
+              >วันสิ้นอายุเลขที่ใบอนุญาตขับขี่รถยนต์</label
+            >
+            <input
+              formControlName="exd_carcard_id"
+              class="form-control"
+              type="date"
+              id="example-date-input"
+            />
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
@@ -110,12 +115,13 @@
             />
           </div>
           <div class="form-group">
-            <label for="exampleInputPassword1">รหัสผ่าน</label>
-            <input
-              formControlName="password"
-              type="password"
+            <label for="exampleInputPassword1">ที่อยู่สถานประกอบการ</label>
+            <textarea
+              formControlName="company_address"
+              type="text"
               class="form-control"
-            />
+              rows="4"
+            ></textarea>
           </div>
         </form>
       </div>
@@ -124,7 +130,7 @@
       <div class="col-6">
         <section *ngIf="isEdit">
           <ion-button
-          (click)="disableFormEdit('disable')"
+            (click)="disableFormEdit('disable')"
             color="light"
             expand="block"
             ><b>ยกเลิก</b></ion-button
@@ -134,17 +140,14 @@
       <div class="col-6 pb-3">
         <section *ngIf="!isEdit">
           <ion-button
-          (click)="disableFormEdit('enable')"
+            (click)="disableFormEdit('enable')"
             color="warning"
             expand="block"
             ><b>แก้ไข</b></ion-button
           >
         </section>
         <section *ngIf="isEdit">
-          <ion-button
-          (click)="onUpdate()"
-            color="success"
-            expand="block"
+          <ion-button (click)="onUpdate()" color="success" expand="block"
             ><b>บันทึก</b></ion-button
           >
         </section>

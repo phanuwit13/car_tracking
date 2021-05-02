@@ -47,7 +47,9 @@ export class AdminPage implements OnInit {
     }
   };
   getDriverExp = async () => {
-    let httpRespone: any = await this.http.get('getloseexduser');
+    let formData = new FormData();
+    formData.append('company_id', '');
+    let httpRespone: any = await this.http.post('getloseexduser',formData);
     if (httpRespone.response.success) {
       console.log(httpRespone.response.data);
 

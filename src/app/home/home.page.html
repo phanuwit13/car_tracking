@@ -14,7 +14,11 @@
 </ion-header>
 <ion-content [fullscreen]="true">
   <div class="container pt-3">
-    <div *ngIf="showAlert"  class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div
+      *ngIf="showAlert"
+      class="alert alert-warning alert-dismissible fade show"
+      role="alert"
+    >
       มีรถสองแถวอยู่ในบริเวณใกล้ๆ
       <button
         type="button"
@@ -95,6 +99,12 @@
             </div>
             <div class="col-4 d-flex align-items-center justify-content-end">
               <span>{{item.car_color}}</span>
+            </div>
+            <div class="col-8 d-flex align-items-center">
+              {{item.driver_title +item.driver_fname + " " +item.driver_lname}}
+            </div>
+            <div class="col-4 d-flex align-items-center justify-content-end">
+              <span>{{item.driver_phone}}</span>
             </div>
           </div>
         </li>

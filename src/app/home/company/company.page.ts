@@ -10,13 +10,17 @@ import Swal from 'sweetalert2';
 export class CompanyPage implements OnInit {
   public company_id: any;
   public driverPending: Array<any> = [];
+  public driverExp: Array<any> = [];
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
   ionViewDidEnter() {
+    this.company_id = this.http.localStorage.get('user').company_id;
     this.getDriverPending();
+    this.getDriverExp(this.company_id)
   }
   ngOnInit() {
     this.company_id = this.http.localStorage.get('user').company_id;
     this.getDriverPending();
+    this.getDriverExp(this.company_id)
   }
   getDriverPending = async () => {
     let formData = new FormData();
@@ -29,6 +33,18 @@ export class CompanyPage implements OnInit {
       this.driverPending = httpRespone.response.data;
     } else {
       this.driverPending = [];
+    }
+  };
+  getDriverExp = async (value) => {
+    let formData = new FormData();
+    formData.append('company_id', value);
+    let httpRespone: any = await this.http.post('getloseexduser',formData);
+    if (httpRespone.response.success) {
+      console.log(httpRespone.response.data);
+
+      this.driverExp = httpRespone.response.data;
+    } else {
+      this.driverExp = [];
     }
   };
   Logout = () => {

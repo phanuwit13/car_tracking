@@ -4,7 +4,7 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>พนักงานขับรถ</ion-title>
-    <ion-button
+    <!-- <ion-button
     data-toggle="modal"
     data-target="#staticBackdrop2"
       class="login pr-1"
@@ -12,13 +12,13 @@
       slot="end"
       color="success"
       >เพิ่ม</ion-button
-    >
+    > -->
   </ion-toolbar>
 </ion-header>
 
 <ion-content mode="md">
   <div class="container">
-    <div class="box-newcompany">
+    <!-- <div class="box-newcompany">
       <div [routerLink]="['pending']" class="row company-list">
         <div class="col-2 col-md-1">
           <img src="assets/icon/warning.png" alt="" />
@@ -30,22 +30,22 @@
           >
         </div>
       </div>
-    </div>
-    <div class="box-newcompany">
+    </div> -->
+    <!-- <div class="box-newcompany">
       <div [routerLink]="['reject']" class="row company-list">
         <div class="col-2 col-md-1">
           <img src="assets/icon/remove.png" alt="" />
         </div>
         <div class="col-10 col-md-11">พนักงานขับรถที่ปิดการใช้งาน</div>
       </div>
-    </div>
+    </div> -->
     <div class="box-newcompany">
       <div [routerLink]="['exp']" class="row company-list">
         <div class="col-2 col-md-1">
           <img src="assets/icon/question.png" alt="" />
         </div>
         <div class="col-10 col-md-11">
-          พนักงานที่ใบอนุญาติขับขี่หมดอายุ
+          พนักงานที่ใบอนุญาตขับขี่หมดอายุ
           <span *ngIf="this.driverExp" class="notify-badge"
             >{{this.driverExp.length}}</span
           >
@@ -56,7 +56,7 @@
 
     <ul class="list-group">
       <li class="row boxdatalist" *ngFor="let item of driverApproved">
-        <div class="col-8 col-md-10 d-flex align-items-center">
+        <div class="col-10 col-md-11 d-flex align-items-center">
           {{item.driver_title+item.driver_fname+" "+item.driver_lname}}
         </div>
         <button
@@ -67,12 +67,12 @@
         >
           แก้ไข
         </button>
-        <button
+        <!-- <button
           (click)="deleteUser(item.driver_id)"
           class="col-2 col-md-1 bg-danger d-flex align-items-center text-white text-alingcenter"
         >
           ลบ
-        </button>
+        </button> -->
       </li>
     </ul>
 
@@ -104,7 +104,9 @@
           <div class="modal-body">
             <form action="" [formGroup]="form_edit">
               <div class="form-group">
-                <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
+                <label for="exampleInputPassword1"
+                  >หมายเลขบัตรประจำตัวประชาชน</label
+                >
                 <input
                   disabled
                   value="{{this.form_edit.controls.identification_id.value}}"
@@ -113,21 +115,11 @@
                 />
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
+                <label for="exampleInputPassword1">รหัสผ่าน</label>
                 <input
-                  disabled
-                  value="{{this.form_edit.controls.carcard_id.value}}"
-                  type="text"
+                  formControlName="password"
+                  type="password"
                   class="form-control"
-                />
-              </div>
-              <div class="form-group">
-                <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
-                <input
-                  formControlName="exd_carcard_id"
-                  class="form-control"
-                  type="date"
-                  id="example-date-input"
                 />
               </div>
               <div class="form-group">
@@ -155,15 +147,26 @@
                 />
               </div>
               <div class="form-group">
-                <label for="exampleFormControlSelect1">สถานประกอบการ</label>
-                <select formControlName="company_id" class="form-control">
-                  <option
-                    *ngFor="let item of companyApproved"
-                    [value]="item.company_id"
-                  >
-                    {{item.company_name}}
-                  </option>
-                </select>
+                <label for="exampleInputPassword1"
+                  >เลขที่ใบอนุญาตขับขี่รถยนต์</label
+                >
+                <input
+                  disabled
+                  value="{{this.form_edit.controls.carcard_id.value}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="example-date-input"
+                  >วันสิ้นอายุเลขที่ใบอนุญาตขับขี่รถยนต์</label
+                >
+                <input
+                  formControlName="exd_carcard_id"
+                  class="form-control"
+                  type="date"
+                  id="example-date-input1"
+                />
               </div>
               <div class="form-group">
                 <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
@@ -174,13 +177,17 @@
                 />
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">รหัสผ่าน</label>
-                <input
-                  formControlName="password"
-                  type="password"
-                  class="form-control"
-                />
+                <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+                <select formControlName="company_id" class="form-control">
+                  <option
+                    *ngFor="let item of companyApproved"
+                    [value]="item.company_id"
+                  >
+                    {{item.company_name}}
+                  </option>
+                </select>
               </div>
+
               <div class="form-group">
                 <label for="exampleFormControlSelect1">สถานะ</label>
                 <select formControlName="status" class="form-control">
@@ -269,7 +276,7 @@
                 formControlName="exd_carcard_id"
                 class="form-control"
                 type="date"
-                id="example-date-input"
+                id="example-date-input2"
               />
             </div>
             <div class="form-group">

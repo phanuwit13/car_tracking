@@ -1,0 +1,184 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>หมายเลขเส้นทาง</ion-title>
+    <ion-button
+      data-toggle="modal"
+      data-target="#staticBackdrop"
+      class="login pr-1"
+      size="small"
+      slot="end"
+      color="success"
+      >เพิ่มหมายเลขเส้นทาง</ion-button
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <!-- <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+      <select #company (change)="getRoute(company.value)" class="form-control">
+        <option *ngFor="let item of companyApproved" [value]="item.company_id">
+          {{item.company_name}}
+        </option>
+      </select> -->
+    <!-- <section>
+        <ion-button color="success" expand="block"
+          ><b>เพิ่มเส้นทาง</b></ion-button
+        >
+      </section> -->
+    <!-- </div> -->
+
+    <ul class="list-group">
+      <li class="row boxdatalist" *ngFor="let item of routeData">
+        <div class="col-8 col-md-10 d-flex align-items-center">
+          สายที่ {{item.route_number}} : {{item.company_name}}
+        </div>
+        <!-- <button
+          [routerLink]="['edit',item.route_id]"
+          data-toggle="modal"
+          data-target="#staticBackdropEdit"
+          class="col-2 col-md-1 bg-warning d-flex align-items-center text-white text-alingcenter"
+        >
+          แก้ไข
+        </button> -->
+        <button
+          data-toggle="modal"
+          data-target="#staticBackdrop2"
+          (click)="setRouteEdit(item) ;getCompanyEdit(item.company_id);"
+          class="col-2 col-md-1 bg-warning d-flex align-items-center text-white text-alingcenter"
+        >
+          แก้ไข
+        </button>
+        <button
+          (click)="deleteRouteCompany(item.route_company_id)"
+          class="col-2 col-md-1 bg-danger d-flex align-items-center text-white text-alingcenter"
+        >
+          ลบ
+        </button>
+      </li>
+    </ul>
+  </div>
+</ion-content>
+
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-backdrop="static"
+  data-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">เพิ่มหมายเลขเส้นทาง</h5>
+      </div>
+      <div class="modal-body">
+        <form action="" [formGroup]="form_add">
+          <div class="form-group">
+            <label for="exampleInputPassword1">หมายเลขเส้นทาง</label>
+            <input
+              formControlName="route_number"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+            <select formControlName="company_id" class="form-control">
+              <option
+                *ngFor="let item of companyApproved"
+                [value]="item.company_id"
+              >
+                {{item.company_name}}
+              </option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="closeModal2"
+          data-dismiss="modal"
+        >
+          ปิด
+        </button>
+        <button
+          type="button"
+          [disabled]="form_add.invalid"
+          (click)="addRouteCompany()"
+          class="btn btn-success"
+        >
+          เพิ่ม
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="staticBackdrop2"
+  data-backdrop="static"
+  data-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel2"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel2">แก้ไขสาย</h5>
+      </div>
+      <div class="modal-body">
+        <form action="" [formGroup]="form_edit">
+          <div class="form-group">
+            <label for="exampleInputPassword1">สายที่</label>
+            <input
+              formControlName="route_number"
+              type="text"
+              class="form-control"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+            <select formControlName="company_id" class="form-control">
+              <option
+                *ngFor="let item of companyEdit"
+                [value]="item.company_id"
+              >
+                {{item.company_name}}
+              </option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="closeModal1"
+          data-dismiss="modal"
+        >
+          ปิด
+        </button>
+        <button
+          type="button"
+          [disabled]="form_edit.invalid"
+          (click)="updateRoute()"
+          class="btn btn-success"
+        >
+          บันทึก
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
