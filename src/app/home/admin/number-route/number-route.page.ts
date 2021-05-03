@@ -155,11 +155,12 @@ export class NumberRoutePage implements OnInit {
     this.form_add.controls['route_number'].setValue('');
   };
   setRouteEdit = (value) => {
+    // console.log(value)
     this.form_edit.controls['route_company_id'].setValue(
       value.route_company_id
     );
-    this.form_edit.controls['route_number_old'].setValue(parseInt(value.route_number));
-    this.form_edit.controls['company_id'].setValue(parseInt(value.company_id));
+    this.form_edit.controls['route_number_old'].setValue(value.route_number);
+    this.form_edit.controls['company_id'].setValue(value.company_id);
     this.form_edit.controls['route_number'].setValue(value.route_number);
     
   };
