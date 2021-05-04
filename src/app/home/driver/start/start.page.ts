@@ -137,7 +137,7 @@ export class StartPage implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        console.log(pos);
+        console.log('ตำแหน่ง',pos);
         
         this.latLocal = position.coords.latitude;
         this.lngLocal = position.coords.longitude;

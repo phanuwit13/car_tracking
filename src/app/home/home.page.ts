@@ -68,7 +68,7 @@ export class HomePage {
           this.carLocation[i][2]
         ),
         map: this.map,
-        icon: 'assets/icon/car.png',
+        icon: 'assets/icon/car2.png',
       });
 
       (function (marker, i, location) {

@@ -53,7 +53,14 @@
       </div>
     </div>
     <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
-
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">สถานประกอบการ</label>
+      <select #company (change)="getDriverApproved(company.value)" class="form-control">
+        <option *ngFor="let item of companyApproved" [value]="item.company_id">
+          {{item.company_name}}
+        </option>
+      </select>
+    </div>
     <ul class="list-group">
       <li class="row boxdatalist" *ngFor="let item of driverApproved">
         <div class="col-10 col-md-11 d-flex align-items-center">

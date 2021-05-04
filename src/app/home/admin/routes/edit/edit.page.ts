@@ -152,7 +152,7 @@ export class EditPage implements OnInit {
       center: { lat: 14.9736915, lng: 102.0827157 },
     });
     this.directionsRenderer.setMap(this.map);
-    console.log(this.testpoint[0].lat);
+    //console.log(this.testpoint[0].lat);
     // this.marker = await new google.maps.Marker({
     //   map: this.map,
     //   animation: google.maps.Animation.DROP,

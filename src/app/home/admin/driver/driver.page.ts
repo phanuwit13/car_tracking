@@ -19,13 +19,13 @@ export class DriverPage implements OnInit {
   public titleName = ['นาย', 'นาง', 'นางสาว'];
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
   ionViewDidEnter() {
-    this.getDriverApproved();
+    this.getDriverApproved('');
     this.getDriverPending();
     this.getDriverExp();
     this.getCompany();
   }
   ngOnInit() {
-    this.getDriverApproved();
+    this.getDriverApproved('');
     this.getDriverPending();
     this.getDriverExp();
     this.getCompany();
@@ -73,22 +73,23 @@ export class DriverPage implements OnInit {
     let formData = new FormData();
     formData.append('status', 'approved');
     formData.append('company_id', '');
+    let com = { company_id: '', company_name: 'กรุณาเลือก' };
     let httpRespone: any = await this.http.post('getcompanydata', formData);
     // console.log(httpRespon);
     if (httpRespone.response.success) {
       this.companyApproved = httpRespone.response.data;
+      this.companyApproved.unshift(com);
     } else {
       this.companyApproved = null;
     }
   };
-  getDriverApproved = async () => {
+  getDriverApproved = async (value) => {
     let formData = new FormData();
     formData.append('status', 'approved');
-    formData.append('company_id', '');
+    formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getdriver', formData);
     if (httpRespone.response.success) {
       console.log(httpRespone.response.data);
-
       this.driverApproved = httpRespone.response.data;
       this.driverData = httpRespone.response.data;
     } else {
@@ -154,7 +155,7 @@ export class DriverPage implements OnInit {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
         () => {
           document.getElementById('closeModal').click();
-          this.getDriverApproved();
+          this.getDriverApproved('');
           this.getDriverPending();
           this.getDriverExp();
         }
@@ -187,7 +188,7 @@ export class DriverPage implements OnInit {
         ).then(() => {
           this.resetForm();
           document.getElementById('closeModal2').click();
-          this.getDriverApproved();
+          this.getDriverApproved('');
           this.getDriverPending();
           this.getDriverExp();
         });
@@ -217,7 +218,7 @@ export class DriverPage implements OnInit {
             httpRespone.response.message + ' !',
             'success'
           ).then(() => {
-            this.getDriverApproved();
+            this.getDriverApproved('');
             this.getDriverPending();
             this.getDriverExp();
           });
