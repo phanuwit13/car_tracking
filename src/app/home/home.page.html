@@ -77,9 +77,12 @@
   </div> -->
   <div class="container">
     <section>
-      <ion-button (click)="getLocation()" color="primary" expand="block"
+      <ion-button (click)="getMyLocation()" color="primary" expand="block"
         ><b>ตำแหน่งของฉัน</b></ion-button
       >
+      <!-- <ion-button (click)="getLocation()" color="primary" expand="block"
+        ><b>ตำแหน่งของฉัน</b></ion-button
+      > -->
     </section>
     <div class="mt-4">
       <ion-title class="ml-0 pl-0" *ngIf="carShow.length > 0"

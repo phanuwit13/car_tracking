@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Platform, LoadingController } from '@ionic/angular';
+import { Geolocation } from "@ionic-native/geolocation/ngx";
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-start',
@@ -21,7 +22,8 @@ export class StartPage implements OnInit {
   constructor(
     private http: HttpService,
     private formBuilder: FormBuilder,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private geolocation: Geolocation
   ) {}
 
   ngOnInit() {
@@ -106,7 +108,7 @@ export class StartPage implements OnInit {
   }
   run = () => {
     this.runLocation = setInterval(() => {
-      this.getLocation();
+      this.getMyLocation();
       if (this.latLocal && this.lngLocal) {
         this.setPosition();
       }
@@ -130,20 +132,26 @@ export class StartPage implements OnInit {
       // this.getCarSelect();
     }
   }
-  getLocation = async () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position: any) => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        console.log('ตำแหน่ง',pos);
+  // getLocation = async () => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position: any) => {
+  //       const pos = {
+  //         lat: position.coords.latitude,
+  //         lng: position.coords.longitude,
+  //       };
+  //       console.log('ตำแหน่ง',pos);
         
-        this.latLocal = position.coords.latitude;
-        this.lngLocal = position.coords.longitude;
-      });
-    } else {
-      console.log('error');
-    }
-  };
+  //       this.latLocal = position.coords.latitude;
+  //       this.lngLocal = position.coords.longitude;
+  //     });
+  //   } else {
+  //     console.log('error');
+  //   }
+  // };
+  async getMyLocation() {
+    this.geolocation.getCurrentPosition().then(async (resp) => {
+      this.latLocal = resp.coords.latitude
+        this.lngLocal = resp.coords.longitude;
+    });
+  }
 }

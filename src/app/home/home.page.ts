@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { Platform, LoadingController } from '@ionic/angular';
+import { Geolocation } from "@ionic-native/geolocation/ngx";
 
 declare var google;
 
@@ -47,7 +48,8 @@ export class HomePage {
   public carMark: any;
   constructor(
     private http: HttpService,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private geolocation: Geolocation
   ) {}
   ngOnInit() {
     this.checkEXD();
@@ -203,34 +205,34 @@ export class HomePage {
       this.http.navRouter('/home/login');
     }
   };
-  getLocation = async () => {
-    this.loading = await this.loadingCtrl.create({
-      message: 'Please wait...',
-    });
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position: any) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          this.myLocation = pos;
-          // this.infoWindow.setPosition(pos);
-          // this.infoWindow.setContent("ตำแหน่งของคุณ");
-          //this.infoWindow.open(this.map);
-          this.map.setCenter(pos);
-          this.loading.dismiss();
-          this.marker.setPosition(pos);
-        },
-        () => {
-          //this.handleLocationError(true, infoWindow, map.getCenter()!);
-        }
-      );
-    } else {
-      // Browser doesn't support Geolocation
-      // handleLocationError(false, infoWindow, map.getCenter()!);
-    }
-  };
+  // getLocation = async () => {
+  //   this.loading = await this.loadingCtrl.create({
+  //     message: 'Please wait...',
+  //   });
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position: any) => {
+  //         const pos = {
+  //           lat: position.coords.latitude,
+  //           lng: position.coords.longitude,
+  //         };
+  //         this.myLocation = pos;
+  //         // this.infoWindow.setPosition(pos);
+  //         // this.infoWindow.setContent("ตำแหน่งของคุณ");
+  //         //this.infoWindow.open(this.map);
+  //         this.map.setCenter(pos);
+  //         this.loading.dismiss();
+  //         this.marker.setPosition(pos);
+  //       },
+  //       () => {
+  //         //this.handleLocationError(true, infoWindow, map.getCenter()!);
+  //       }
+  //     );
+  //   } else {
+  //     // Browser doesn't support Geolocation
+  //     // handleLocationError(false, infoWindow, map.getCenter()!);
+  //   }
+  // };
   getRoute = async (route_id) => {
     let formData = new FormData();
     formData.append('route_id', route_id);
@@ -349,5 +351,22 @@ export class HomePage {
         }
       }
     );
+  }
+  async getMyLocation() {
+    this.loading = await this.loadingCtrl.create({
+      message: "Please wait...",
+    });
+    await this.loading.present();
+    this.geolocation.getCurrentPosition().then(async (resp) => {
+      const pos = {
+        lat: resp.coords.latitude,
+        lng: resp.coords.longitude,
+      };
+      this.myLocation = pos;
+      this.map.setCenter(pos);
+      this.loading.dismiss();
+      this.marker.setPosition(pos);
+      this.loading.dismiss();
+    });
   }
 }
