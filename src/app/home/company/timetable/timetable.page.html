@@ -1,0 +1,374 @@
+<ion-header mode="md">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>ตารางการเดินรถ</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md">
+  <div class="container">
+    <ion-searchbar (ionChange)="searchArray($event)"></ion-searchbar>
+    <!-- <ion-searchbar></ion-searchbar> -->
+    <ul class="list-group">
+      <li
+        class="list-company"
+        id="accordionExample"
+        *ngFor="let item of carRoundData"
+      >
+        <div class="row boxdatalist">
+          <a
+            type="button"
+            data-toggle="collapse"
+            [attr.data-target]="'#car_round_id'+item.car_round_id"
+            aria-expanded="false"
+            class="col-10 col-md-10 d-flex align-items-center"
+          >
+            {{item.car_number + " " + item.provinces}}
+          </a>
+          <button
+            (click)="setRoundEdit(item)"
+            data-toggle="modal"
+            data-target="#staticBackdropEdit"
+            class="col-2 col-md-2 bg-warning d-flex align-items-center text-white text-alingcenter"
+          >
+            แก้ไข
+          </button>
+        </div>
+        <div
+          id="car_round_id{{item.car_round_id}}"
+          class="collapse"
+          data-parent="#accordionExample"
+        >
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                <label for="exampleInputPassword1">สาย</label>
+                <input
+                  disabled
+                  value="{{item.route_name}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 1</label>
+                <input
+                  disabled
+                  value="{{item.round_1}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 2</label>
+                <input
+                  disabled
+                  value="{{item.round_2}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 3</label>
+                <input
+                  disabled
+                  value="{{item.round_3}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 4</label>
+                <input
+                  disabled
+                  value="{{item.round_4}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 5</label>
+                <input
+                  disabled
+                  value="{{item.round_5}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 6</label>
+                <input
+                  disabled
+                  value="{{item.round_6}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 7</label>
+                <input
+                  disabled
+                  value="{{item.round_7}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 8</label>
+                <input
+                  disabled
+                  value="{{item.round_8}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 9</label>
+                <input
+                  disabled
+                  value="{{item.round_9}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 10</label>
+                <input
+                  disabled
+                  value="{{item.round_10}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdropEdit"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">
+              แก้ไข ข้อมูลตารางการเดินรถ
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="form_edit">
+              <div class="form-group">
+                <label for="exampleInputPassword1">สาย</label>
+                <input
+                  disabled
+                  value="{{this.form_edit.controls.route_name.value}}"
+                  type="text"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 1</label>
+                <input formControlName="round_1" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 2</label>
+                <input formControlName="round_2" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 3</label>
+                <input formControlName="round_3" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 4</label>
+                <input formControlName="round_4" type="text" class="form-control" />
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 5</label>
+                <input formControlName="round_5" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 6</label>
+                <input formControlName="round_6" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 7</label>
+                <input formControlName="round_7" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 8</label>
+                <input formControlName="round_8" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 9</label>
+                <input formControlName="round_9" type="text" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รอบที่ 10</label>
+                <input formControlName="round_10" type="text" class="form-control" />
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="closeModal1"
+            >
+              ยกเลิก
+            </button>
+            <button
+              (click)="updateCarRound()"
+              type="button"
+              class="btn btn-success"
+            >
+              อัพเดท
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal2 -->
+    <div
+      class="modal fade"
+      id="staticBackdrop2"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">เพิ่ม ข้อมูลรถ</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!-- <div class="modal-body">
+            <form [formGroup]="form_add">
+              <div class="form-group">
+                <label for="exampleInputPassword1">ทะเบียนรถ</label>
+                <input
+                  formControlName="car_number"
+                  type="text"
+                  placeholder="Ex. กก 1111"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleFormControlSelect1">จังหวัด</label>
+                <select formControlName="provinces" class="form-control">
+                  <option
+                    *ngFor="let item of provinces"
+                    [value]="item.PROVINCE_NAME"
+                  >
+                    {{item.PROVINCE_NAME}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">สีของรถ</label>
+                <input
+                  formControlName="car_color"
+                  type="text"
+                  class="form-control"
+                  placeholder="Ex. ขาว-แดง"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">ยี่ห้อของรถ</label>
+                <input
+                  formControlName="car_brand"
+                  type="text"
+                  class="form-control text-uppercase"
+                  placeholder="Ex. TOYOTA"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">สถานประกอบการ</label>
+                <input
+                  disabled
+                  value="{{this.company_name}}"
+                  type="text"
+                  class="form-control text-uppercase"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">เส้นทาง</label>
+                <select formControlName="route_id" class="form-control">
+                  <option *ngFor="let item of route" [value]="item.route_id">
+                    {{item.route_number+' '+item.route_name}}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">รายละเอียดรถ</label>
+                <textarea
+                  formControlName="car_detail"
+                  class="form-control"
+                ></textarea>
+              </div>
+            </form>
+          </div> -->
+
+          <div class="modal-footer">
+            <!-- <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              id="closeModal2"
+            >
+              ยกเลิก
+            </button>
+            <button
+              (click)="onRegister()"
+              type="button"
+              [disabled]="form_add.invalid"
+              class="btn btn-success"
+            >
+              เพิ่ม
+            </button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <ion-fab horizontal="end" vertical="bottom" slot="">
+    <ion-fab-button
+      data-toggle="modal"
+      data-target="#staticBackdrop2"
+      color="success"
+    >
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+</ion-content>

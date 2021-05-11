@@ -319,7 +319,7 @@ export class HomePage {
         this.calculateDistance(this.myLocation, this.carDistance);
         // console.log('โหลด');
       }
-    }, 3000);
+    }, 2000);
   }
   DeleteMarkers() {
     //Loop through all the markers and remove

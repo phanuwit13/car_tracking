@@ -108,12 +108,12 @@ export class StartPage implements OnInit {
   }
   run = () => {
     this.runLocation = setInterval(() => {
-      this.getMyLocation();
+      this.getLocation();
       if (this.latLocal && this.lngLocal) {
         this.setPosition();
       }
      // console.log('sda');
-    }, 2000);
+    }, 1500);
   };
 
   async setPosition() {
@@ -132,26 +132,26 @@ export class StartPage implements OnInit {
       // this.getCarSelect();
     }
   }
-  // getLocation = async () => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition((position: any) => {
-  //       const pos = {
-  //         lat: position.coords.latitude,
-  //         lng: position.coords.longitude,
-  //       };
-  //       console.log('ตำแหน่ง',pos);
+  getLocation = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        const pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        console.log('ตำแหน่ง',pos);
         
-  //       this.latLocal = position.coords.latitude;
-  //       this.lngLocal = position.coords.longitude;
-  //     });
-  //   } else {
-  //     console.log('error');
-  //   }
-  // };
-  async getMyLocation() {
-    this.geolocation.getCurrentPosition().then(async (resp) => {
-      this.latLocal = resp.coords.latitude
-        this.lngLocal = resp.coords.longitude;
-    });
-  }
+        this.latLocal = position.coords.latitude;
+        this.lngLocal = position.coords.longitude;
+      });
+    } else {
+      console.log('error');
+    }
+  };
+  // async getMyLocation() {
+  //   this.geolocation.getCurrentPosition().then(async (resp) => {
+  //     this.latLocal = resp.coords.latitude
+  //       this.lngLocal = resp.coords.longitude;
+  //   });
+  // }
 }

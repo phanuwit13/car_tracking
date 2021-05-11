@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'car',
     loadChildren: () => import('./car/car.module').then( m => m.CarPageModule)
+  },
+  {
+    path: 'timetable',
+    loadChildren: () => import('./timetable/timetable.module').then( m => m.TimetablePageModule)
   }
 ];
 

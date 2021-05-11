@@ -49,7 +49,7 @@
         <button
           data-toggle="modal"
           data-target="#staticBackdrop2"
-          (click)="setRouteEdit(item) ;getCompanyEdit(item.company_id);"
+          (click)="setRouteEdit(item)"
           class="col-2 col-md-1 bg-warning d-flex align-items-center text-white text-alingcenter"
         >
           แก้ไข
@@ -152,7 +152,7 @@
             <label for="exampleFormControlSelect1">สถานประกอบการ</label>
             <select formControlName="company_id" class="form-control">
               <option
-                *ngFor="let item of companyEdit"
+                *ngFor="let item of companyApproved"
                 [value]="item.company_id"
               >
                 {{item.company_name}}

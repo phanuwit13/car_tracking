@@ -45,9 +45,10 @@ export class NumberRoutePage implements OnInit {
   };
   getCompany = async () => {
     let formData = new FormData();
+    formData.append('status', 'approved');
     formData.append('company_id', '');
     let com = { company_id: '', company_name: 'กรุณาเลือก' };
-    let httpRespone: any = await this.http.post('getcompanynotroute', formData);
+    let httpRespone: any = await this.http.post('getcompanydata', formData);
     console.log(httpRespone.response.data);
     if (httpRespone.response.success) {
       this.companyApproved = httpRespone.response.data;
@@ -56,20 +57,20 @@ export class NumberRoutePage implements OnInit {
       this.companyApproved = null;
     }
   };
-  getCompanyEdit = async (value) => {
-    let formData = new FormData();
-    formData.append('company_id', value);
-    let com = { company_id: '', company_name: 'กรุณาเลือก' };
-    let httpRespone: any = await this.http.post('getcompanynotroute', formData);
-    console.log(httpRespone.response.data);
-    if (httpRespone.response.success) {
-      this.companyEdit = httpRespone.response.data;
-      this.companyEdit.unshift(com);
-      // this.form_edit.controls['company_id'].setValue(value);
-    } else {
-      this.companyEdit = null;
-    }
-  };
+  // getCompanyEdit = async (value) => {
+  //   let formData = new FormData();
+  //   formData.append('company_id', value);
+  //   let com = { company_id: '', company_name: 'กรุณาเลือก' };
+  //   let httpRespone: any = await this.http.post('getcompanynotroute', formData);
+  //   console.log(httpRespone.response.data);
+  //   if (httpRespone.response.success) {
+  //     this.companyEdit = httpRespone.response.data;
+  //     this.companyEdit.unshift(com);
+  //     // this.form_edit.controls['company_id'].setValue(value);
+  //   } else {
+  //     this.companyEdit = null;
+  //   }
+  // };
   addRouteCompany = async () => {
     let formData = new FormData();
     Object.keys(this.form_add.value).forEach((key) => {
