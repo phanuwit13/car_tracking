@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 export class StartPage implements OnInit {
   public user: any;
   public carData: Array<any> = [];
+  public carData2: Array<any> = [];
   public enable = true;
   public carShow: any = [];
   public carDrive: any = null;
@@ -19,6 +20,7 @@ export class StartPage implements OnInit {
   public latLocal: any;
   public lngLocal: any;
   public runLocation: any;
+  public timeTable: Array<any> = [];
   constructor(
     private http: HttpService,
     private formBuilder: FormBuilder,
@@ -30,6 +32,7 @@ export class StartPage implements OnInit {
     this.user = this.http.localStorage.get('user');
     console.log(this.user.company_id);
     this.getCarSelect();
+    this.getCarSelecter();
     this.getDriverEnable();
   }
 
@@ -45,6 +48,31 @@ export class StartPage implements OnInit {
       this.carData = [];
     }
   }
+  async getCarSelecter() {
+    let formData = new FormData();
+    formData.append('company_id', this.user.company_id);
+    let com = { car_id: '', car_number: 'กรุณาเลือก' , provinces:''};
+    let httpRespone: any = await this.http.post('carselectdrive', formData);
+    if (httpRespone.response.success) {
+      console.log(httpRespone.response.data);
+      this.carData2 = httpRespone.response.data;
+      this.carData2.unshift(com);
+      //this.setCompanyEdit(httpRespone.response.data[0]);
+    } else {
+      this.carData2 = [];
+    }
+  }
+  getCarRoundShow = async (value) => {
+    let formData = new FormData();
+    formData.append('car_id', value);
+    let httpRespone: any = await this.http.post('getcarroundcar', formData);
+    console.log(httpRespone.response);
+    if (httpRespone.response.success) {
+      this.timeTable = httpRespone.response.data
+    } else {
+      this.timeTable = []
+    }
+  };
   async getDriverEnable() {
     let formData = new FormData();
     formData.append('driver_id', this.user.driver_id);

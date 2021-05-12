@@ -26,6 +26,50 @@
         หยุด
       </button>
     </div>
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">รถ</label>
+      <select
+        #company
+        (change)="getCarRoundShow(company.value)"
+        class="form-control"
+      >
+        <option *ngFor="let item of carData2" [value]="item.car_id">
+          {{item.car_number + ' ' + item.provinces}}
+        </option>
+      </select>
+    </div>
+    <div class="container con-table mt-2 d-flex justify-content-start">
+      <table class="table table-bordered">
+        <thead>
+          <tr class="table-primary align-middle">
+            <th class="align-middle text-center" scope="col">รอบที่ 1</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 2</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 3</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 4</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 5</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 6</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 7</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 8</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 9</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 10</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of timeTable">
+            <td>{{item.round_1}}</td>
+            <td>{{item.round_2}}</td>
+            <td>{{item.round_3}}</td>
+            <td>{{item.round_4}}</td>
+            <td>{{item.round_5}}</td>
+            <td>{{item.round_6}}</td>
+            <td>{{item.round_7}}</td>
+            <td>{{item.round_8}}</td>
+            <td>{{item.round_9}}</td>
+            <td>{{item.round_10}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <b *ngIf="carDrive"><h5>รายละเอียดรถที่ขับ</h5></b>
     <div *ngIf="carDrive" class="row">
       <br />
@@ -57,78 +101,6 @@
             class="form-control"
           />
         </div>
-        <!-- <div class="form-group">
-          <label for="exampleInputPassword1">รหัสบัตรประชาชน</label>
-          <input
-            value="{{this.form_edit.value.identification_id}}"
-            disabled
-            type="text"
-            class="form-control"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">เลขที่ใบอนุญาตขับขี่</label>
-          <input
-            value="{{this.form_edit.value.carcard_id}}"
-            disabled
-            type="text"
-            class="form-control"
-          />
-        </div>
-        <div class="form-group">
-          <label for="example-date-input">วันหมดอายุใบอนุญาตขับขี่</label>
-          <input
-            disabled
-            value="{{this.user.exd_carcard_id}}"
-            class="form-control"
-            type="date"
-            id="example-date-input"
-          />
-        </div>
-        <div class="form-group">
-          <label for="example-date-input">คำนำหน้า</label>
-          <input
-            disabled
-            value="{{this.user.driver_title}}"
-            class="form-control"
-            type="text"
-            id="example-date-input"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">ชื่อจริง</label>
-          <input
-            disabled
-            value="{{this.user.driver_fname}}"
-            type="text"
-            class="form-control"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">นามสกุล</label>
-          <input
-            disabled
-            value="{{this.user.driver_lname}}"
-            type="text"
-            class="form-control"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">เบอร์ติดต่อ</label>
-          <input
-            
-            type="text"
-            class="form-control"
-          />
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">รหัสผ่าน</label>
-          <input
-    
-            type="password"
-            class="form-control"
-          />
-        </div> -->
       </form>
     </div>
   </div>
