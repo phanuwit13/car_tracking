@@ -37,11 +37,11 @@
           <select
             [(ngModel)]="route_id"
             #company
-            (change)="getRoute(company.value)"
+            (change)="getRoute(company.value) ; getCarRoundShow(company.value)"
             class="form-control"
           >
             <option *ngFor="let item of roueName" [value]="item.route_id">
-              {{item.route_number+' : '+item.route_name}}
+              {{'สาย ' + item.route_number+' : '+item.route_name}}
             </option>
           </select>
         </div>
@@ -84,6 +84,43 @@
         ><b>ตำแหน่งของฉัน</b></ion-button
       > -->
     </section>
+    <div class="mt-4 d-flex justify-content-start">
+      <ion-checkbox [(ngModel)]="timeCheck" color="primary"></ion-checkbox> <span class="ml-2">ตารางการเดินรถ</span> 
+    </div>
+    <div *ngIf="timeCheck"  class="container con-table mt-2 d-flex justify-content-start">
+      <table class="table table-bordered">
+        <thead>
+          <tr class="table-primary align-middle">
+            <th class="align-middle text-center" scope="col">เบอร์รถ</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 1</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 2</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 3</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 4</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 5</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 6</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 7</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 8</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 9</th>
+            <th class="align-middle text-center" scope="col">รอบที่ 10</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of timeTable" >
+            <td>{{item.car_number +' '+ item.provinces}}</td>
+            <td>{{item.round_1}}</td>
+            <td>{{item.round_2}}</td>
+            <td>{{item.round_3}}</td>
+            <td>{{item.round_4}}</td>
+            <td>{{item.round_5}}</td>
+            <td>{{item.round_6}}</td>
+            <td>{{item.round_7}}</td>
+            <td>{{item.round_8}}</td>
+            <td>{{item.round_9}}</td>
+            <td>{{item.round_10}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="mt-4">
       <ion-title class="ml-0 pl-0" *ngIf="carShow.length > 0"
         >รถที่กำลังให้บริการ</ion-title
@@ -113,61 +150,5 @@
         </li>
       </ul>
     </div>
-    <!-- <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>เบอร์รถ</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1-33</td>
-          <td>5:00</td>
-          <td>6:45</td>
-          <td>8:42</td>
-          <td>10:42</td>
-          <td>12:42</td>
-          <td>14:42</td>
-          <td>16:42</td>
-        </tr>
-        <tr>
-          <td>1-33</td>
-          <td>5:00</td>
-          <td>6:45</td>
-          <td>8:42</td>
-          <td>10:42</td>
-          <td>12:42</td>
-          <td>14:42</td>
-          <td>16:42</td>
-        </tr>
-        <tr>
-          <td>1-33</td>
-          <td>5:00</td>
-          <td>6:45</td>
-          <td>8:42</td>
-          <td>10:42</td>
-          <td>12:42</td>
-          <td>14:42</td>
-          <td>16:42</td>
-        </tr>
-        <tr>
-          <td>1-33</td>
-          <td>5:00</td>
-          <td>6:45</td>
-          <td>8:42</td>
-          <td>10:42</td>
-          <td>12:42</td>
-          <td>14:42</td>
-          <td>16:42</td>
-        </tr>
-      </tbody>
-    </table> -->
   </div>
 </ion-content>

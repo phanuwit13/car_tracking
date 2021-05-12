@@ -79,6 +79,12 @@ export class AddgoPage implements OnInit {
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.getRouteCompanyData = httpRespone.response.data;
+      this.getRouteCompanyData.sort(function (a, b) {
+        // Compare the 2 dates
+        if (parseInt(a.route_number) < parseInt(b.route_number)) return -1;
+        if (parseInt(a.route_number) > parseInt(b.route_number)) return 1;
+        return 0;
+      });
     } else {
       this.getRouteCompanyData = [];
     }

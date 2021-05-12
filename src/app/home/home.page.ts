@@ -13,6 +13,7 @@ declare var google;
 export class HomePage {
   public map: any;
   public direction = 0;
+  public timeCheck = true
   public infoWindow = new google.maps.InfoWindow();
   public carInfo = new google.maps.InfoWindow();
   public userData: Array<any> = [];
@@ -23,6 +24,7 @@ export class HomePage {
   public carMarkDisplay: any = [];
   public route_id: any = '001';
   public carShow: any = [];
+  public timeTable: Array<any> = [];
   public myLocation: any = { lat: 14.9736915, lng: 102.0827157 };
   public showAlert: boolean = false;
   public directionsService = new google.maps.DirectionsService();
@@ -51,10 +53,17 @@ export class HomePage {
     public loadingCtrl: LoadingController,
     private geolocation: Geolocation
   ) {}
+  ionViewDidEnter() {
+    this.checkEXD();
+    this.getRoute('001');
+    this.getCarRoundShow('001')
+    this.getRouteName();
+  }
   ngOnInit() {
     this.checkEXD();
     this.loadmap();
     this.getRoute('001');
+    this.getCarRoundShow('001')
     this.getRouteName();
     this.run();
   }
@@ -251,6 +260,17 @@ export class HomePage {
       this.testpoint = [];
     }
   };
+  getCarRoundShow = async (route_id) => {
+    let formData = new FormData();
+    formData.append('route_id', route_id);
+    let httpRespone: any = await this.http.post('getcarroundshow', formData);
+    console.log(httpRespone.response);
+    if (httpRespone.response.success) {
+      this.timeTable = httpRespone.response.data
+    } else {
+      this.timeTable = []
+    }
+  };
   getCarEnable = async (route_id) => {
     let formData = new FormData();
     formData.append('route_id', route_id);
@@ -290,8 +310,14 @@ export class HomePage {
     let httpRespone: any = await this.http.post('getrouteselect', formData);
     // console.log(httpRespone);
     if (httpRespone.response.success) {
-      // console.log(httpRespone.response.data);
+      console.log(httpRespone.response.data);
       this.roueName = httpRespone.response.data;
+      this.roueName.sort(function(a, b) {
+        // Compare the 2 dates
+        if (parseInt( a.route_number) < parseInt(b.route_number)) return -1;
+        if (parseInt(a.route_number) > parseInt(b.route_number)) return 1;
+        return 0;
+      });
     } else {
       this.roueName = null;
     }

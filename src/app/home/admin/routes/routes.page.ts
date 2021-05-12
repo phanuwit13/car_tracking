@@ -22,7 +22,7 @@ export class RoutesPage implements OnInit {
   ngOnInit() {
     this.getRoute('');
     this.getCompany();
-    this.getRouteCompany()
+    this.getRouteCompany();
   }
   getRoute = async (value) => {
     console.log(value);
@@ -32,7 +32,19 @@ export class RoutesPage implements OnInit {
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.routeData = httpRespone.response.data;
-      this.routeRaw= httpRespone.response.data;
+      this.routeRaw = httpRespone.response.data;
+      this.routeData.sort(function (a, b) {
+        // Compare the 2 dates
+        if (parseInt(a.route_number) < parseInt(b.route_number)) return -1;
+        if (parseInt(a.route_number) > parseInt(b.route_number)) return 1;
+        return 0;
+      });
+      this.routeRaw.sort(function (a, b) {
+        // Compare the 2 dates
+        if (parseInt(a.route_number) < parseInt(b.route_number)) return -1;
+        if (parseInt(a.route_number) > parseInt(b.route_number)) return 1;
+        return 0;
+      });
     } else {
       this.routeData = null;
     }
@@ -44,6 +56,12 @@ export class RoutesPage implements OnInit {
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.getRouteCompanyData = httpRespone.response.data;
+      this.getRouteCompanyData.sort(function (a, b) {
+        // Compare the 2 dates
+        if (parseInt(a.route_number) < parseInt(b.route_number)) return -1;
+        if (parseInt(a.route_number) > parseInt(b.route_number)) return 1;
+        return 0;
+      });
       this.getRouteCompanyData.unshift(com);
     } else {
       this.getRouteCompanyData = [];
@@ -53,7 +71,7 @@ export class RoutesPage implements OnInit {
     const q = event.target.value;
     let data = this.routeRaw;
     data = data.filter(function (value) {
-      return value.route_name.indexOf(q) !== -1 ; // returns true or false
+      return value.route_name.indexOf(q) !== -1; // returns true or false
     });
     this.routeData = data;
   }
@@ -67,6 +85,7 @@ export class RoutesPage implements OnInit {
     if (httpRespone.response.success) {
       this.companyApproved = httpRespone.response.data;
       this.companyApproved.unshift(com);
+      
     } else {
       this.companyApproved = null;
     }
@@ -102,5 +121,4 @@ export class RoutesPage implements OnInit {
       }
     });
   };
-
 }

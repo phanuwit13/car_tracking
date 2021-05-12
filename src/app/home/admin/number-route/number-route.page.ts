@@ -39,6 +39,12 @@ export class NumberRoutePage implements OnInit {
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.routeData = httpRespone.response.data;
+      this.routeData.sort(function(a, b) {
+        // Compare the 2 dates
+        if (parseInt( a.route_number) < parseInt(b.route_number)) return -1;
+        if (parseInt(a.route_number) > parseInt(b.route_number)) return 1;
+        return 0;
+      });
     } else {
       this.routeData = [];
     }
