@@ -59,24 +59,24 @@ export class CarPage implements OnInit {
   }
   getCarRouteCompany = async (value) => {
     console.log(value);
-
-    let formData = new FormData();
-    formData.append('company_id', value);
-    let httpRespone: any = await this.http.post('getcarroutecompany', formData);
-    console.log(httpRespone.response);
-    if (httpRespone.response.success) {
-      this.route_company_id = httpRespone.response.data[0].route_company_id;
-      this.getRoute(this.route_company_id);
-    } else {
-      this.route_company_id = null;
-    }
+    this.getRoute(value)
+    // let formData = new FormData();
+    // formData.append('company_id', value);
+    // let httpRespone: any = await this.http.post('getcarroutecompany', formData);
+    // console.log(httpRespone.response);
+    // if (httpRespone.response.success) {
+    //   this.route_company_id = httpRespone.response.data[0].route_company_id;
+    //   this.getRoute(this.route_company_id);
+    // } else {
+    //   this.route_company_id = null;
+    // }
   };
   getRoute = async (value) => {
     console.log(value);
 
     let formData = new FormData();
-    formData.append('route_company_id', value);
-    let httpRespone: any = await this.http.post('getrouteselect', formData);
+    formData.append('company_id', value);
+    let httpRespone: any = await this.http.post('getrouteselection', formData);
     console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.route = httpRespone.response.data;
