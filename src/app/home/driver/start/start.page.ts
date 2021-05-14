@@ -84,6 +84,7 @@ export class StartPage implements OnInit {
       //this.setCompanyEdit(httpRespone.response.data[0]);
       this.carShow = httpRespone.response.data[0];
       this.carDrive = httpRespone.response.data[0].car_id;
+      this.getCarRoundShow(this.carDrive )
       console.log(this.carShow);
     } else {
       clearInterval(this.runLocation);
