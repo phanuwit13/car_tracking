@@ -70,7 +70,6 @@ export class CompanyPage implements OnInit {
     formData.append('company_id', '');
     let httpRespone: any = await this.http.post('getcompanydata', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.companyApproved = httpRespone.response.data;
       this.companyData = httpRespone.response.data;
     } else {
@@ -83,15 +82,12 @@ export class CompanyPage implements OnInit {
     formData.append('company_id', '');
     let httpRespone: any = await this.http.post('getcompanydata', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.companyPending = httpRespone.response.data;
     } else {
       this.companyPending = null;
     }
   };
   setCompanyEdit = (value) => {
-    console.log(value);
     this.form_edit.controls['company_name'].setValue(value.company_name);
     this.form_edit.controls['company_address'].setValue(value.company_address);
     this.form_edit.controls['company_phone'].setValue(value.company_phone);
@@ -118,9 +114,6 @@ export class CompanyPage implements OnInit {
     Object.keys(this.form_edit.value).forEach((key) => {
       formData.append(key, this.form_edit.controls[key].value);
     });
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
     let httpRespone: any = await this.http.post('updatecompany', formData);
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
@@ -134,7 +127,7 @@ export class CompanyPage implements OnInit {
       Swal.fire('ผิดพลาด', httpRespone.response.message + ' !', 'error');
     }
   };
-  onRegister = async () => {
+  onAddCompany = async () => {
     if (this.http.checkEXD(this.form_register.value.exd_carcard_id)) {
       this.form_register.controls['status_carcard_id'].setValue(0);
     } else {
@@ -150,11 +143,7 @@ export class CompanyPage implements OnInit {
       Object.keys(this.form_register.value).forEach((key) => {
         formData.append(key, this.form_register.controls[key].value);
       });
-      formData.forEach((value, key) => {
-        console.log(key + ' : ' + value);
-      });
       let httpRespone: any = await this.http.post('registercompany', formData);
-      console.log(httpRespone);
       if (httpRespone.response.success) {
         Swal.fire(
           'สำเร็จ',

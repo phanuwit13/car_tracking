@@ -34,7 +34,7 @@
           {{item.car_number+" "+item.provinces}}
         </div>
         <button
-          (click)="setDriverEdit(item);clearRoute()"
+          (click)="setCarEdit(item);clearRoute()"
           data-toggle="modal"
           data-target="#staticBackdropEdit"
           class="col-2 col-md-1 bg-warning d-flex align-items-center text-white text-alingcenter"
@@ -272,7 +272,7 @@
               ยกเลิก
             </button>
             <button
-              (click)="onRegister()"
+              (click)="addCar()"
               type="button"
               [disabled]="form_add.invalid"
               class="btn btn-success"

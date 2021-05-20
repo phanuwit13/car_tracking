@@ -36,9 +36,8 @@ export class ExpPage implements OnInit {
     let formData = new FormData();
     formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getloseexduser',formData);
-    console.log(httpRespone.response);
+
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
 
       this.driverExp = httpRespone.response.data;
     } else {
@@ -83,9 +82,7 @@ export class ExpPage implements OnInit {
         Object.keys(this.form_edit.value).forEach((key) => {
           formData.append(key, this.form_edit.controls[key].value);
         });
-        formData.forEach((value, key) => {
-          console.log(key + ' : ' + value);
-        });
+
         let httpRespone: any = await this.http.post('updatedriver', formData);
         if (httpRespone.response.success) {
           Swal.fire(

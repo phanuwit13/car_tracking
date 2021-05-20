@@ -36,10 +36,8 @@ export class DriverPage implements OnInit {
     formData.append('status', 'approved');
     formData.append('company_id', '');
     let httpRespone: any = await this.http.post('getcompanydata', formData);
-    console.log(httpRespone);
-    if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
 
+    if (httpRespone.response.success) {
       this.companyApproved = httpRespone.response.data;
     } else {
       this.companyApproved = null;
@@ -61,19 +59,16 @@ export class DriverPage implements OnInit {
       Object.keys(this.form_register.value).forEach((key) => {
         formData.append(key, this.form_register.controls[key].value);
       });
-      formData.forEach((value, key) => {
-        console.log(key + ' : ' + value);
-      });
+
       let httpRespone: any = await this.http.post('registeruser', formData);
-      console.log(httpRespone);
+
       if (httpRespone.response.success) {
         Swal.fire(
           'สำเร็จ',
           httpRespone.response.message + ' !',
           'success'
         ).then(() => {
-          this.http.navRouter("/home/login");
-          console.log(httpRespone.response.message);
+          this.http.navRouter('/home/login');
         });
       } else {
         Swal.fire('ผิดพลาด', httpRespone.response.message + ' !', 'error');

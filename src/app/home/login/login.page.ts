@@ -9,8 +9,7 @@ import Swal from 'sweetalert2';
 })
 export class LoginPage implements OnInit {
   public form_user: FormGroup;
-  constructor(private http: HttpService, private formBuilder: FormBuilder) {
-  }
+  constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.form_user = this.formBuilder.group({
@@ -25,15 +24,12 @@ export class LoginPage implements OnInit {
     Object.keys(this.form_user.value).forEach((key) => {
       formData.append(key, this.form_user.controls[key].value);
     });
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
+
     let httpRespone: any = await this.http.post('login', formData);
-    console.log(httpRespone);
+
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
         () => {
-          // console.log('bif')
           if (httpRespone.response.data.status === 'approved') {
             if (httpRespone.response.data.type_driver === 2) {
               this.http.localStorage.set('user', httpRespone.response.data);
@@ -46,11 +42,9 @@ export class LoginPage implements OnInit {
               this.http.navRouter('/home/driver');
             }
           } else if (httpRespone.response.data.status === 'pending') {
+            this.http.navRouter('/home/pending-user');
           } else {
           }
-
-          // this.http.navRouter("/home/login/homeadmin");
-          // console.log(httpRespone.response.message)
         }
       );
     } else {

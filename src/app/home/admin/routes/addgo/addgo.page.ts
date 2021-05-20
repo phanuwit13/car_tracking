@@ -15,11 +15,13 @@ export class AddgoPage implements OnInit {
   public loading: any;
   public form_edit: FormGroup;
   public getRouteCompanyData: any;
+
   public directionsService = new google.maps.DirectionsService();
   public directionsRenderer = new google.maps.DirectionsRenderer({
     suppressMarkers: false,
     draggable: true,
   });
+
   public infoWindow = new google.maps.InfoWindow();
   public testpoint: Array<any> = [
     { lat: 14.959040765156375, lng: 102.05514995434011 },
@@ -56,27 +58,13 @@ export class AddgoPage implements OnInit {
     );
     this.form_edit = this.formBuilder.group({
       route_name: ['', Validators.required],
-      // route_number: ['', Validators.required],
       route_price: ['', Validators.required],
       route_company_id: ['', Validators.required],
-      // company_id: ['', Validators.required],
     });
   }
-  // getCompany = async () => {
-  //   let formData = new FormData();
-  //   formData.append('status', 'approved');
-  //   formData.append('company_id', '');
-  //   let httpRespone: any = await this.http.post('getcompanydata', formData);
-  //   console.log(httpRespone.response.data);
-  //   if (httpRespone.response.success) {
-  //     this.companyApproved = httpRespone.response.data;
-  //   } else {
-  //     this.companyApproved = null;
-  //   }
-  // };
+
   getRouteCompany = async () => {
     let httpRespone: any = await this.http.post('getroutecompany');
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.getRouteCompanyData = httpRespone.response.data;
       this.getRouteCompanyData.sort(function (a, b) {
@@ -100,9 +88,6 @@ export class AddgoPage implements OnInit {
     formData.append('direction', this.direction.toString());
     formData.append('position', JSON.stringify(waypoint));
 
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
     let httpRespone: any = await this.http.post('addroute', formData);
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
@@ -121,7 +106,6 @@ export class AddgoPage implements OnInit {
     let origin = result.request.origin;
     let destination = result.request.destination;
     let point = [];
-
     for (let i = 0; i < waypointLength; i++) {
       if (way[i].location.location != undefined) {
         point.push({
@@ -159,7 +143,6 @@ export class AddgoPage implements OnInit {
       center: { lat: 14.9736915, lng: 102.0827157 },
     });
     this.directionsRenderer.setMap(this.map);
-    console.log(this.testpoint[0].lat);
     this.flightPath.setMap(this.map);
 
     this.loading.dismiss();

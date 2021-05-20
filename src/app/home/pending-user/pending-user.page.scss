@@ -1,0 +1,46 @@
+.box-regis {
+    height: auto;
+    // background-color: antiquewhite;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 5%;
+  }
+  .card-regis {
+    background-color: antiquewhite;
+    height: auto;
+    border-radius: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 20px;
+  }
+  .card-regis span {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 600;
+  }
+  .box-img {
+    width: 70%;
+    padding: 20px 0px;
+  }
+  .notify-badge {
+    position: absolute;
+    right: 10px;
+    width: 45px;
+    height: auto;
+    top: 5px;
+    background: #f45c51;
+    text-align: center;
+    border-radius: 20px 20px 20px 20px;
+    color: white;
+    padding: 5px 5px;
+    font-size: 18px;
+  }
+  .container {
+    padding-bottom: 15px;
+  }
+  .logout {
+    margin-right: 5px;
+  }
+  

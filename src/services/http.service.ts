@@ -87,7 +87,6 @@ export class HttpService {
     var dateOne = new Date(exd[0], exd[1], exd[2]);
     var dateTwo = new Date(y, m, d);
 
-    console.log(y + '-' + m + '-' + d + ' : ' + day);
     if (dateOne > dateTwo) {
       return true;
     } else {

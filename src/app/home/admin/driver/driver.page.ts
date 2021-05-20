@@ -75,7 +75,6 @@ export class DriverPage implements OnInit {
     formData.append('company_id', '');
     let com = { company_id: '', company_name: 'กรุณาเลือก' };
     let httpRespone: any = await this.http.post('getcompanydata', formData);
-    // console.log(httpRespon);
     if (httpRespone.response.success) {
       this.companyApproved = httpRespone.response.data;
       this.companyApproved.unshift(com);
@@ -89,7 +88,6 @@ export class DriverPage implements OnInit {
     formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getdriver', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.driverApproved = httpRespone.response.data;
       this.driverData = httpRespone.response.data;
     } else {
@@ -112,7 +110,6 @@ export class DriverPage implements OnInit {
     formData.append('company_id', '');
     let httpRespone: any = await this.http.post('getloseexduser',formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
 
       this.driverExp = httpRespone.response.data;
     } else {
@@ -147,9 +144,6 @@ export class DriverPage implements OnInit {
     Object.keys(this.form_edit.value).forEach((key) => {
       formData.append(key, this.form_edit.controls[key].value);
     });
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
     let httpRespone: any = await this.http.post('updatedriver', formData);
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
@@ -175,11 +169,7 @@ export class DriverPage implements OnInit {
       Object.keys(this.form_register.value).forEach((key) => {
         formData.append(key, this.form_register.controls[key].value);
       });
-      formData.forEach((value, key) => {
-        console.log(key + ' : ' + value);
-      });
       let httpRespone: any = await this.http.post('registeruser', formData);
-      console.log(httpRespone);
       if (httpRespone.response.success) {
         Swal.fire(
           'สำเร็จ',

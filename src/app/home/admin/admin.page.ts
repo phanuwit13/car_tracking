@@ -28,8 +28,6 @@ export class AdminPage implements OnInit {
     formData.append('company_id', '');
     let httpRespone: any = await this.http.post('getcompanydata', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.companyPending = httpRespone.response.data;
     } else {
       this.companyPending = null;
@@ -49,10 +47,8 @@ export class AdminPage implements OnInit {
   getDriverExp = async () => {
     let formData = new FormData();
     formData.append('company_id', '');
-    let httpRespone: any = await this.http.post('getloseexduser',formData);
+    let httpRespone: any = await this.http.post('getloseexduser', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.driverExp = httpRespone.response.data;
     } else {
       this.driverExp = [];

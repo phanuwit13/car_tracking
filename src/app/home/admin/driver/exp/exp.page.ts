@@ -33,11 +33,8 @@ export class ExpPage implements OnInit {
   getDriverExp = async () => {
     let formData = new FormData();
     formData.append('company_id', '');
-    let httpRespone: any = await this.http.post('getloseexduser',formData);
-    console.log(httpRespone.response);
+    let httpRespone: any = await this.http.post('getloseexduser', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.driverExp = httpRespone.response.data;
     } else {
       this.driverExp = null;
@@ -56,7 +53,9 @@ export class ExpPage implements OnInit {
     this.form_edit.controls['driver_id'].setValue(value.driver_id);
     this.form_edit.controls['company_id'].setValue(value.company_id);
     this.form_edit.controls['exd_carcard_id'].setValue(value.exd_carcard_id);
-    this.form_edit.controls['status_carcard_id'].setValue(value.status_carcard_id);
+    this.form_edit.controls['status_carcard_id'].setValue(
+      value.status_carcard_id
+    );
     this.form_edit.controls['driver_phone'].setValue(value.driver_phone);
   };
 
@@ -81,9 +80,7 @@ export class ExpPage implements OnInit {
         Object.keys(this.form_edit.value).forEach((key) => {
           formData.append(key, this.form_edit.controls[key].value);
         });
-        formData.forEach((value, key) => {
-          console.log(key + ' : ' + value);
-        });
+
         let httpRespone: any = await this.http.post('updatedriver', formData);
         if (httpRespone.response.success) {
           Swal.fire(
@@ -92,7 +89,7 @@ export class ExpPage implements OnInit {
             'success'
           ).then(() => {
             this.getDriverExp();
-            document.getElementById('closeexp').click()
+            document.getElementById('closeexp').click();
           });
         } else {
           Swal.fire('ผิดพลาด', httpRespone.response.message + ' !', 'error');

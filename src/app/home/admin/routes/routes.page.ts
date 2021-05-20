@@ -25,11 +25,9 @@ export class RoutesPage implements OnInit {
     this.getRouteCompany();
   }
   getRoute = async (value) => {
-    console.log(value);
     let formData = new FormData();
     formData.append('route_company_id', value);
     let httpRespone: any = await this.http.post('getrouteselect', formData);
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.routeData = httpRespone.response.data;
       this.routeRaw = httpRespone.response.data;
@@ -53,7 +51,6 @@ export class RoutesPage implements OnInit {
   getRouteCompany = async () => {
     let httpRespone: any = await this.http.post('getroutecompany');
     let com = { route_company_id: '', route_number: 'กรุณาเลือก' };
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.getRouteCompanyData = httpRespone.response.data;
       this.getRouteCompanyData.sort(function (a, b) {
@@ -81,7 +78,6 @@ export class RoutesPage implements OnInit {
     formData.append('company_id', '');
     let com = { company_id: '', company_name: 'กรุณาเลือก' };
     let httpRespone: any = await this.http.post('getcompanydata', formData);
-    console.log(httpRespone.response.data);
     if (httpRespone.response.success) {
       this.companyApproved = httpRespone.response.data;
       this.companyApproved.unshift(com);

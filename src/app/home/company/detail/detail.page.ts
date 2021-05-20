@@ -23,7 +23,7 @@ export class DetailPage implements OnInit {
     this.getDriverApproved();
     this.getCarData();
     this.form_edit.disable();
-    this.getCompanyData()
+    this.getCompanyData();
   }
   ngOnInit() {
     this.user = this.http.localStorage.get('user');
@@ -44,21 +44,18 @@ export class DetailPage implements OnInit {
       driver_lname: ['', Validators.required],
       status: ['', Validators.required],
     });
-    console.log(this.company_id);
     this.getDriverApproved();
     this.getCarData();
     this.form_edit.disable();
-    this.getCompanyData()
+    this.getCompanyData();
   }
   getDriverApproved = async () => {
     let formData = new FormData();
     formData.append('status', 'approved');
     formData.append('company_id', this.company_id);
     let httpRespone: any = await this.http.post('getdriver', formData);
-    //console.log(httpRespone.response);
-    if (httpRespone.response.success) {
-     // console.log(httpRespone.response.data);
 
+    if (httpRespone.response.success) {
       this.driverApproved = httpRespone.response.data;
     } else {
       this.driverApproved = [];
@@ -69,9 +66,8 @@ export class DetailPage implements OnInit {
     formData.append('status', 'approved');
     formData.append('driver_id', this.user.driver_id);
     let httpRespone: any = await this.http.post('getdriverone', formData);
-    console.log(httpRespone.response);
+
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.companyData = httpRespone.response.data;
       this.setCompanyEdit(httpRespone.response.data[0]);
     } else {
@@ -79,7 +75,6 @@ export class DetailPage implements OnInit {
     }
   };
   setCompanyEdit = (value) => {
-    console.log(value);
     this.form_edit.controls['company_name'].setValue(value.company_name);
     this.form_edit.controls['company_address'].setValue(value.company_address);
     this.form_edit.controls['company_phone'].setValue(value.company_phone);
@@ -101,8 +96,6 @@ export class DetailPage implements OnInit {
     formData.append('company_id', this.company_id);
     let httpRespone: any = await this.http.post('getcar', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.carData = httpRespone.response.data;
     } else {
       this.carData = [];
@@ -127,9 +120,7 @@ export class DetailPage implements OnInit {
     Object.keys(this.form_edit.value).forEach((key) => {
       formData.append(key, this.form_edit.controls[key].value);
     });
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
+
     let httpRespone: any = await this.http.post('updatecompany', formData);
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(

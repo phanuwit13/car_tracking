@@ -34,7 +34,7 @@ export class DetailPage implements OnInit {
       driver_lname: ['', Validators.required],
       status: ['', Validators.required],
     });
-    console.log(this.user.company_id);
+
     this.getDriverApproved();
     this.form_edit.disable();
   }
@@ -44,7 +44,6 @@ export class DetailPage implements OnInit {
     formData.append('driver_id', this.user.driver_id);
     let httpRespone: any = await this.http.post('getdriverone', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
 
       this.driverApproved = httpRespone.response.data;
       this.setCompanyEdit(httpRespone.response.data[0]);
@@ -53,7 +52,6 @@ export class DetailPage implements OnInit {
     }
   };
   setCompanyEdit = (value) => {
-    console.log(value);
     this.form_edit.controls['company_name'].setValue(value.company_name);
     this.form_edit.controls['company_address'].setValue(value.company_address);
     this.form_edit.controls['company_phone'].setValue(value.company_phone);
@@ -89,9 +87,6 @@ export class DetailPage implements OnInit {
     let formData = new FormData();
     Object.keys(this.form_edit.value).forEach((key) => {
       formData.append(key, this.form_edit.controls[key].value);
-    });
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
     });
     let httpRespone: any = await this.http.post('updatecompany', formData);
     if (httpRespone.response.success) {

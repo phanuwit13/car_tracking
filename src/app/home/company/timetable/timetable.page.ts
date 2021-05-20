@@ -46,7 +46,6 @@ export class TimetablePage implements OnInit {
     let formData = new FormData();
     formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getcarround', formData);
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.carRoundData = httpRespone.response.data;
       this.carRoundRaw= httpRespone.response.data;
@@ -71,9 +70,7 @@ export class TimetablePage implements OnInit {
         Object.keys(this.form_edit.value).forEach((key) => {
           formData.append(key, this.form_edit.controls[key].value);
         });
-        formData.forEach((value, key) => {
-          console.log(key + ' : ' + value);
-        });
+
         let httpRespone: any = await this.http.post('updateround', formData);
         if (httpRespone.response.success) {
           Swal.fire(
@@ -92,7 +89,6 @@ export class TimetablePage implements OnInit {
     });
   };
   setRoundEdit = (value) => {
-    console.log(value);
     this.form_edit.controls['car_round_id'].setValue(value.car_round_id);
     this.form_edit.controls['route_name'].setValue(value.route_name);
     this.form_edit.controls['round_1'].setValue(value.round_1);

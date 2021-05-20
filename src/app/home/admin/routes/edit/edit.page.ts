@@ -43,7 +43,6 @@ export class EditPage implements OnInit {
 
   ngOnInit() {
     this.route_id = this.route.snapshot.paramMap.get('route_id');
-    console.log(this.route_id);
     this.getRoute(this.route_id);
     this.getRouteEdit(this.route_id);
     this.loadmap();
@@ -59,25 +58,13 @@ export class EditPage implements OnInit {
   }
   getRouteCompany = async () => {
     let httpRespone: any = await this.http.post('getroutecompany');
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.getRouteCompanyData = httpRespone.response.data;
     } else {
       this.getRouteCompanyData = [];
     }
   };
-  // getCompany = async () => {
-  //   let formData = new FormData();
-  //   formData.append('status', 'approved');
-  //   formData.append('company_id', '');
-  //   let httpRespone: any = await this.http.post('getcompanydata', formData);
-  //   console.log(httpRespone.response.data);
-  //   if (httpRespone.response.success) {
-  //     this.companyApproved = httpRespone.response.data;
-  //   } else {
-  //     this.companyApproved = null;
-  //   }
-  // };
+
   setDirection(value) {
     this.direction = value.detail.value;
     this.getRoute(this.route_id);
@@ -93,14 +80,11 @@ export class EditPage implements OnInit {
     formData.append('direction', this.direction.toString());
     formData.append('position', JSON.stringify(waypoint));
 
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
     let httpRespone: any = await this.http.post('updateroute', formData);
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
         () => {
-          this.http.navRouter('/home/admin/routes')
+          this.http.navRouter('/home/admin/routes');
         }
       );
     } else {
@@ -152,12 +136,6 @@ export class EditPage implements OnInit {
       center: { lat: 14.9736915, lng: 102.0827157 },
     });
     this.directionsRenderer.setMap(this.map);
-    //console.log(this.testpoint[0].lat);
-    // this.marker = await new google.maps.Marker({
-    //   map: this.map,
-    //   animation: google.maps.Animation.DROP,
-    //   position: { lat: 14.9736915, lng: 102.0827157 },
-    // });
     this.flightPath.setMap(this.map);
 
     this.loading.dismiss();
@@ -168,7 +146,6 @@ export class EditPage implements OnInit {
     formData.append('direction', this.direction.toString());
     let httpRespone: any = await this.http.post('getroute', formData);
     if (httpRespone.response.success) {
-      // console.log(httpRespone.response.data);
       this.testpoint = httpRespone.response.data.map((value) => {
         return { lat: parseFloat(value.lat), lng: parseFloat(value.lng) };
       });
@@ -185,7 +162,6 @@ export class EditPage implements OnInit {
     formData.append('route_id', route_id);
     let httpRespone: any = await this.http.post('getrouteedit', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.setRouteEdit(httpRespone.response.data[0]);
     } else {
     }
@@ -195,7 +171,9 @@ export class EditPage implements OnInit {
     this.form_edit.controls['route_id'].setValue(value.route_id);
     // this.form_edit.controls['route_number'].setValue(value.route_number);
     this.form_edit.controls['route_price'].setValue(value.route_price);
-    this.form_edit.controls['route_company_id'].setValue(value.route_company_id);
+    this.form_edit.controls['route_company_id'].setValue(
+      value.route_company_id
+    );
   };
   calculateAndDisplayRoute = (
     directionsService: any,

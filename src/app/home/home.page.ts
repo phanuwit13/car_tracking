@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { Platform, LoadingController } from '@ionic/angular';
-import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 declare var google;
 
@@ -13,7 +13,7 @@ declare var google;
 export class HomePage {
   public map: any;
   public direction = 0;
-  public timeCheck = true
+  public timeCheck = true;
   public infoWindow = new google.maps.InfoWindow();
   public carInfo = new google.maps.InfoWindow();
   public userData: Array<any> = [];
@@ -33,13 +33,13 @@ export class HomePage {
     suppressMarkers: true,
   });
   public testpoint: Array<any> = [];
-  public flightPath = new google.maps.Polyline({
-    path: this.testpoint,
-    geodesic: true,
-    strokeColor: '#FF0000',
-    strokeOpacity: 1.0,
-    strokeWeight: 1,
-  });
+  // public flightPath = new google.maps.Polyline({
+  //   path: this.testpoint,
+  //   geodesic: true,
+  //   strokeColor: '#FF0000',
+  //   strokeOpacity: 1.0,
+  //   strokeWeight: 1,
+  // });
   // public carLocation: any = [
   //   ['กว 2343 นครราชสีมา', 13.784122, 100.481522],
   //   ['กข 2122 นครราชสีมา', 13.783122, 100.489522],
@@ -56,21 +56,20 @@ export class HomePage {
   ionViewDidEnter() {
     this.checkEXD();
     this.getRoute('001');
-    this.getCarRoundShow('001')
+    this.getCarRoundShow('001');
     this.getRouteName();
   }
   ngOnInit() {
     this.checkEXD();
     this.loadmap();
     this.getRoute('001');
-    this.getCarRoundShow('001')
+    this.getCarRoundShow('001');
     this.getRouteName();
     this.run();
   }
   loadCar() {
     let i = 0;
     this.carMarkDisplay = [];
-    // console.log(this.carLocation);
 
     for (i; i < this.carLocation.length; i++) {
       this.carMark = new google.maps.Marker({
@@ -90,6 +89,10 @@ export class HomePage {
           carInfo.open(this.map, marker);
         });
       })(this.carMark, i, this.carLocation);
+      // let carInfo = new google.maps.InfoWindow({
+      //   content: this.carLocation[i][0],
+      // });
+      // carInfo.open(this.map, this.carMark);
       this.carMarkDisplay.push(this.carMark);
     }
   }
@@ -104,18 +107,15 @@ export class HomePage {
       center: { lat: 14.9736915, lng: 102.0827157 },
     });
     this.directionsRenderer.setMap(this.map);
-    // console.log(this.testpoint[0].lat);
     this.marker = await new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
       position: { lat: 14.9736915, lng: 102.0827157 },
       icon: 'assets/icon/person.png',
     });
-    // this.loadCar();
-    this.flightPath.setMap(this.map);
-
     this.loading.dismiss();
   }
+
   calculateAndDisplayRoute = (
     directionsService: any,
     directionsRenderer: any
@@ -175,10 +175,10 @@ export class HomePage {
       }
     );
   };
+
   checkEXD = async () => {
-    let httpRespone: any = await this.http.get('getexduser');
+    let httpRespone: any = await this.http.get('getexduser'); //ดึงค่าจากดาต้าเบสว่าึนขับคนไหนหมดอายถ
     if (httpRespone.response.success) {
-      // console.log(httpRespone.response.data);
       this.userData = httpRespone.response.data;
     } else {
       this.userData = null;
@@ -193,14 +193,13 @@ export class HomePage {
             'updatestatuscarcardid',
             formData
           );
-          // console.log(httpRespone);
         }
       });
     }
   };
+
   checkUser = async () => {
     let type = await this.http.localStorage.get('user');
-    // console.log(type);
 
     if (type) {
       if (type.type_driver === 2) {
@@ -248,7 +247,6 @@ export class HomePage {
     formData.append('direction', this.direction.toString());
     let httpRespone: any = await this.http.post('getroute', formData);
     if (httpRespone.response.success) {
-      // console.log(httpRespone.response.data);
       this.testpoint = httpRespone.response.data.map((value) => {
         return { lat: parseFloat(value.lat), lng: parseFloat(value.lng) };
       });
@@ -260,15 +258,15 @@ export class HomePage {
       this.testpoint = [];
     }
   };
+
   getCarRoundShow = async (route_id) => {
     let formData = new FormData();
     formData.append('route_id', route_id);
     let httpRespone: any = await this.http.post('getcarroundshow', formData);
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
-      this.timeTable = httpRespone.response.data
+      this.timeTable = httpRespone.response.data;
     } else {
-      this.timeTable = []
+      this.timeTable = [];
     }
   };
   getCarEnable = async (route_id) => {
@@ -279,7 +277,6 @@ export class HomePage {
     let httpRespone: any = await this.http.post('getcarenable', formData);
     if (httpRespone.response.success) {
       this.carShow = httpRespone.response.data;
-      // console.log(httpRespone.response.data);
       httpRespone.response.data.map((value) => {
         this.carDistance.push({
           lat: parseFloat(value.lat),
@@ -291,12 +288,9 @@ export class HomePage {
           parseFloat(value.lng),
         ]);
       });
-
-      //console.log(this.carLocation);
     } else {
       this.carShow = [];
       this.carDistance = [];
-      // console.log(httpRespone.response.message);
     }
     return data;
   };
@@ -308,13 +302,11 @@ export class HomePage {
     let formData = new FormData();
     formData.append('route_company_id', '');
     let httpRespone: any = await this.http.post('getrouteselect', formData);
-    // console.log(httpRespone);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.roueName = httpRespone.response.data;
-      this.roueName.sort(function(a, b) {
+      this.roueName.sort(function (a, b) {
         // Compare the 2 dates
-        if (parseInt( a.route_number) < parseInt(b.route_number)) return -1;
+        if (parseInt(a.route_number) < parseInt(b.route_number)) return -1;
         if (parseInt(a.route_number) > parseInt(b.route_number)) return 1;
         return 0;
       });
@@ -322,28 +314,13 @@ export class HomePage {
       this.roueName = null;
     }
   };
-  // getRouteCompany = async () => {
-  //   let httpRespone: any = await this.http.post('getroutecompany');
-  //   let com = { route_company_id: '', route_number: 'กรุณาเลือก' };
-  //   console.log(httpRespone.response);
-  //   if (httpRespone.response.success) {
-  //     this.getRouteCompanyData = httpRespone.response.data;
-  //     this.getRouteCompanyData.unshift(com);
-  //   } else {
-  //     this.getRouteCompanyData = [];
-  //   }
-  // };
   run() {
     setInterval(async () => {
       this.carLocation = await this.getCarEnable(this.route_id);
       this.DeleteMarkers();
-      // this.loadCar();
       if (this.carLocation.length > 0) {
         this.loadCar();
-        // console.log(this.carDistance);
-
         this.calculateDistance(this.myLocation, this.carDistance);
-        // console.log('โหลด');
       }
     }, 2000);
   }
@@ -356,7 +333,6 @@ export class HomePage {
   }
   setAlert() {
     this.showAlert = !this.showAlert;
-    // console.log(this.showAlert);
   }
   calculateDistance(origin1, destination) {
     this.distanceMatrixService.getDistanceMatrix(
@@ -367,20 +343,20 @@ export class HomePage {
       },
       (response, status) => {
         if (status === 'OK') {
-          // console.log(response.rows[0].elements);
           response.rows[0].elements.forEach((value) => {
-            if (value.distance.value < 1000) this.showAlert = true
-            else{
-              // console.log('รอไปก่อน')
+            if (value.distance.value < 1000) this.showAlert = true;
+            else {
             }
           });
         }
       }
     );
   }
+
+  // ดึงข้อมูลโลเคชั่น
   async getMyLocation() {
     this.loading = await this.loadingCtrl.create({
-      message: "Please wait...",
+      message: 'Please wait...',
     });
     await this.loading.present();
     this.geolocation.getCurrentPosition().then(async (resp) => {

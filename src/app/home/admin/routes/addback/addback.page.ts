@@ -60,7 +60,6 @@ export class AddbackPage implements OnInit {
   }
   getCompany = async () => {
     let httpRespone: any = await this.http.get('getroutego');
-    console.log(httpRespone.response.data);
     if (httpRespone.response.success) {
       this.routeGo = httpRespone.response.data;
     } else {
@@ -78,10 +77,6 @@ export class AddbackPage implements OnInit {
     });
     formData.append('direction', this.direction.toString());
     formData.append('position', JSON.stringify(waypoint));
-
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
     let httpRespone: any = await this.http.post('addroute', formData);
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(

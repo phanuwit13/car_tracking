@@ -22,7 +22,6 @@ export class CarPage implements OnInit {
   constructor(private http: HttpService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    //console.log(this.provinces)
     this.company_id = this.http.localStorage.get('user').company_id;
     this.getCar(this.company_id);
     this.getCompany(this.company_id);
@@ -58,26 +57,12 @@ export class CarPage implements OnInit {
     this.carData = data;
   }
   getCarRouteCompany = async (value) => {
-    console.log(value);
-    this.getRoute(value)
-    // let formData = new FormData();
-    // formData.append('company_id', value);
-    // let httpRespone: any = await this.http.post('getcarroutecompany', formData);
-    // console.log(httpRespone.response);
-    // if (httpRespone.response.success) {
-    //   this.route_company_id = httpRespone.response.data[0].route_company_id;
-    //   this.getRoute(this.route_company_id);
-    // } else {
-    //   this.route_company_id = null;
-    // }
+    this.getRoute(value);
   };
   getRoute = async (value) => {
-    console.log(value);
-
     let formData = new FormData();
     formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getrouteselection', formData);
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
       this.route = httpRespone.response.data;
     } else {
@@ -85,12 +70,9 @@ export class CarPage implements OnInit {
     }
   };
   getCar = async (value) => {
-    console.log(value);
-
     let formData = new FormData();
     formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getcar', formData);
-    // console.log(httpRespon);
     if (httpRespone.response.success) {
       this.carData = httpRespone.response.data;
       this.carRaw = httpRespone.response.data;
@@ -103,7 +85,6 @@ export class CarPage implements OnInit {
     formData.append('status', 'approved');
     formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getcompanydata', formData);
-    // console.log(httpRespon);
     if (httpRespone.response.success) {
       this.company_name = httpRespone.response.data[0].company_name;
     } else {
@@ -146,11 +127,9 @@ export class CarPage implements OnInit {
     Object.keys(this.form_add.value).forEach((key) => {
       formData.append(key, this.form_add.controls[key].value);
     });
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
+
     let httpRespone: any = await this.http.post('addcar', formData);
-    console.log(httpRespone);
+
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
         () => {
@@ -181,9 +160,6 @@ export class CarPage implements OnInit {
         Object.keys(this.form_edit.value).forEach((key) => {
           formData.append(key, this.form_edit.controls[key].value);
         });
-        formData.forEach((value, key) => {
-          console.log(key + ' : ' + value);
-        });
         let httpRespone: any = await this.http.post('updatecar', formData);
         if (httpRespone.response.success) {
           Swal.fire(
@@ -213,7 +189,6 @@ export class CarPage implements OnInit {
     this.form_add.controls['route_id'].setValue('');
   };
   setDriverEdit = (value) => {
-    console.log(value);
     this.form_edit.controls['car_id'].setValue(value.car_id);
     this.form_edit.controls['car_number'].setValue(value.car_number);
     this.form_edit.controls['provinces'].setValue(value.provinces);

@@ -36,7 +36,6 @@ export class RejectPage implements OnInit {
     formData.append('company_id', '');
     let httpRespone: any = await this.http.post('getdriver', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
 
       this.driverReject = httpRespone.response.data;
     } else {
@@ -82,9 +81,6 @@ export class RejectPage implements OnInit {
       if (result.isConfirmed) {
         Object.keys(this.form_edit.value).forEach((key) => {
           formData.append(key, this.form_edit.controls[key].value);
-        });
-        formData.forEach((value, key) => {
-          console.log(key + ' : ' + value);
         });
         let httpRespone: any = await this.http.post('updatedriver', formData);
         if (httpRespone.response.success) {

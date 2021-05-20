@@ -15,12 +15,12 @@ export class CompanyPage implements OnInit {
   ionViewDidEnter() {
     this.company_id = this.http.localStorage.get('user').company_id;
     this.getDriverPending();
-    this.getDriverExp(this.company_id)
+    this.getDriverExp(this.company_id);
   }
   ngOnInit() {
     this.company_id = this.http.localStorage.get('user').company_id;
     this.getDriverPending();
-    this.getDriverExp(this.company_id)
+    this.getDriverExp(this.company_id);
   }
   getDriverPending = async () => {
     let formData = new FormData();
@@ -28,8 +28,6 @@ export class CompanyPage implements OnInit {
     formData.append('company_id', this.company_id);
     let httpRespone: any = await this.http.post('getdriver', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.driverPending = httpRespone.response.data;
     } else {
       this.driverPending = [];
@@ -38,10 +36,8 @@ export class CompanyPage implements OnInit {
   getDriverExp = async (value) => {
     let formData = new FormData();
     formData.append('company_id', value);
-    let httpRespone: any = await this.http.post('getloseexduser',formData);
+    let httpRespone: any = await this.http.post('getloseexduser', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.driverExp = httpRespone.response.data;
     } else {
       this.driverExp = [];

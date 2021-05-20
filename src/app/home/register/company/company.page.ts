@@ -45,11 +45,9 @@ export class CompanyPage implements OnInit {
       Object.keys(this.form_register.value).forEach((key) => {
         formData.append(key, this.form_register.controls[key].value);
       });
-      formData.forEach((value, key) => {
-        console.log(key + ' : ' + value);
-      });
+
       let httpRespone: any = await this.http.post('registercompany', formData);
-      console.log(httpRespone);
+
       if (httpRespone.response.success) {
         Swal.fire(
           'สำเร็จ',
@@ -57,7 +55,6 @@ export class CompanyPage implements OnInit {
           'success'
         ).then(() => {
           this.http.navRouter("/home/login");
-          console.log(httpRespone.response.message);
         });
       } else {
         Swal.fire('ผิดพลาด', httpRespone.response.message + ' !', 'error');

@@ -28,7 +28,6 @@ export class DriverPage implements OnInit {
     this.getCompany(this.company_id);
   }
   ngOnInit() {
-    
     this.company_id = this.http.localStorage.get('user').company_id;
     this.getDriverApproved();
     this.getDriverPending();
@@ -73,9 +72,8 @@ export class DriverPage implements OnInit {
     formData.append('status', 'approved');
     formData.append('company_id', value);
     let httpRespone: any = await this.http.post('getcompanydata', formData);
-    // console.log(httpRespon);
     if (httpRespone.response.success) {
-      this.company_name=httpRespone.response.data[0].company_name;
+      this.company_name = httpRespone.response.data[0].company_name;
     } else {
       this.company_name = null;
     }
@@ -84,7 +82,10 @@ export class DriverPage implements OnInit {
     const q = event.target.value;
     let data = this.driverData;
     data = data.filter(function (value) {
-      return value.driver_fname.indexOf(q) !== -1 || value.driver_lname.indexOf(q) !== -1; // returns true or false
+      return (
+        value.driver_fname.indexOf(q) !== -1 ||
+        value.driver_lname.indexOf(q) !== -1
+      ); // returns true or false
     });
     this.driverApproved = data;
   }
@@ -94,8 +95,6 @@ export class DriverPage implements OnInit {
     formData.append('company_id', this.company_id);
     let httpRespone: any = await this.http.post('getdriver', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.driverApproved = httpRespone.response.data;
       this.driverData = httpRespone.response.data;
     } else {
@@ -105,10 +104,8 @@ export class DriverPage implements OnInit {
   getDriverExp = async (value) => {
     let formData = new FormData();
     formData.append('company_id', value);
-    let httpRespone: any = await this.http.post('getloseexduser',formData);
+    let httpRespone: any = await this.http.post('getloseexduser', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
-
       this.driverExp = httpRespone.response.data;
     } else {
       this.driverExp = null;
@@ -125,16 +122,7 @@ export class DriverPage implements OnInit {
       this.driverPending = null;
     }
   };
-  // getDriverExp = async () => {
-  //   let httpRespone: any = await this.http.get('getloseexduser');
-  //   if (httpRespone.response.success) {
-  //     console.log(httpRespone.response.data);
 
-  //     this.driverExp = httpRespone.response.data;
-  //   } else {
-  //     this.driverExp = null;
-  //   }
-  // };
   setDriverEdit = (value) => {
     this.form_edit.controls['company_name'].setValue(value.company_name);
     this.form_edit.controls['driver_title'].setValue(value.driver_title);
@@ -164,9 +152,7 @@ export class DriverPage implements OnInit {
     Object.keys(this.form_edit.value).forEach((key) => {
       formData.append(key, this.form_edit.controls[key].value);
     });
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
+
     let httpRespone: any = await this.http.post('updatedriver', formData);
     if (httpRespone.response.success) {
       Swal.fire('สำเร็จ', httpRespone.response.message + ' !', 'success').then(
@@ -193,18 +179,16 @@ export class DriverPage implements OnInit {
       Object.keys(this.form_register.value).forEach((key) => {
         formData.append(key, this.form_register.controls[key].value);
       });
-      formData.forEach((value, key) => {
-        console.log(key + ' : ' + value);
-      });
+
       let httpRespone: any = await this.http.post('registeruser', formData);
-      console.log(httpRespone);
+
       if (httpRespone.response.success) {
         Swal.fire(
           'สำเร็จ',
           httpRespone.response.message + ' !',
           'success'
         ).then(() => {
-          this.resetForm()
+          this.resetForm();
           document.getElementById('closeModal2').click();
           this.getDriverApproved();
           this.getDriverPending();
@@ -263,7 +247,5 @@ export class DriverPage implements OnInit {
     this.form_register.controls['exd_carcard_id'].setValue('');
     this.form_register.controls['driver_phone'].setValue('');
     this.form_register.controls['status_carcard_id'].setValue(0);
-
   };
 }
-

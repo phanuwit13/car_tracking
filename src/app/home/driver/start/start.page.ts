@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../../../services/http.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Platform, LoadingController } from '@ionic/angular';
-import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-start',
@@ -30,7 +30,6 @@ export class StartPage implements OnInit {
 
   ngOnInit() {
     this.user = this.http.localStorage.get('user');
-    console.log(this.user.company_id);
     this.getCarSelect();
     this.getCarSelecter();
     this.getDriverEnable();
@@ -41,7 +40,6 @@ export class StartPage implements OnInit {
     formData.append('company_id', this.user.company_id);
     let httpRespone: any = await this.http.post('carselectdrive', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.carData = httpRespone.response.data;
       //this.setCompanyEdit(httpRespone.response.data[0]);
     } else {
@@ -51,10 +49,9 @@ export class StartPage implements OnInit {
   async getCarSelecter() {
     let formData = new FormData();
     formData.append('company_id', this.user.company_id);
-    let com = { car_id: '', car_number: 'กรุณาเลือก' , provinces:''};
+    let com = { car_id: '', car_number: 'กรุณาเลือก', provinces: '' };
     let httpRespone: any = await this.http.post('carselectdrive', formData);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.carData2 = httpRespone.response.data;
       this.carData2.unshift(com);
       //this.setCompanyEdit(httpRespone.response.data[0]);
@@ -66,42 +63,35 @@ export class StartPage implements OnInit {
     let formData = new FormData();
     formData.append('car_id', value);
     let httpRespone: any = await this.http.post('getcarroundcar', formData);
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
-      this.timeTable = httpRespone.response.data
+      this.timeTable = httpRespone.response.data;
     } else {
-      this.timeTable = []
+      this.timeTable = [];
     }
   };
   async getDriverEnable() {
     let formData = new FormData();
     formData.append('driver_id', this.user.driver_id);
     let httpRespone: any = await this.http.post('getdriverenable', formData);
-    console.log(httpRespone.response);
     if (httpRespone.response.success) {
-      console.log(httpRespone.response.data);
       this.enable = httpRespone.response.success;
       //this.setCompanyEdit(httpRespone.response.data[0]);
       this.carShow = httpRespone.response.data[0];
       this.carDrive = httpRespone.response.data[0].car_id;
-      this.getCarRoundShow(this.carDrive )
-      console.log(this.carShow);
+      this.getCarRoundShow(this.carDrive);
     } else {
       clearInterval(this.runLocation);
       this.enable = httpRespone.response.success;
     }
   }
+
   async setDriverEnable(value) {
     this.carDrive = value;
     let formData = new FormData();
-    console.log(value);
     formData.append('driver_id', this.user.driver_id);
     formData.append('car_id', value);
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
+
     let httpRespone: any = await this.http.post('setdriverenable', formData);
-    console.log(httpRespone.response.data);
     if (httpRespone.response.success) {
       document.getElementById('closeModal2').click();
       this.getDriverEnable();
@@ -110,8 +100,6 @@ export class StartPage implements OnInit {
       this.carShow = this.carData.filter((value) => {
         return value.car_id == this.carDrive;
       });
-      console.log(...this.carShow);
-      //this.setCompanyEdit(httpRespone.response.data[0]);
     } else {
       this.getCarSelect();
     }
@@ -120,11 +108,8 @@ export class StartPage implements OnInit {
     this.carDrive = null;
     let formData = new FormData();
     formData.append('driver_id', this.user.driver_id);
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
+
     let httpRespone: any = await this.http.post('setdriverdisable', formData);
-    console.log(httpRespone.response.data);
     if (httpRespone.response.success) {
       document.getElementById('closeModal2').click();
       this.getDriverEnable();
@@ -141,7 +126,6 @@ export class StartPage implements OnInit {
       if (this.latLocal && this.lngLocal) {
         this.setPosition();
       }
-     // console.log('sda');
     }, 1500);
   };
 
@@ -150,13 +134,10 @@ export class StartPage implements OnInit {
     formData.append('lat', this.latLocal);
     formData.append('lng', this.lngLocal);
     formData.append('car_id', this.carDrive);
-    formData.forEach((value, key) => {
-      console.log(key + ' : ' + value);
-    });
+
     let httpRespone: any = await this.http.post('setposition', formData);
-    console.log(httpRespone.response);
+
     if (httpRespone.response.success) {
-      
     } else {
       // this.getCarSelect();
     }
@@ -168,13 +149,10 @@ export class StartPage implements OnInit {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
-        console.log('ตำแหน่ง',pos);
-        
         this.latLocal = position.coords.latitude;
         this.lngLocal = position.coords.longitude;
       });
     } else {
-      console.log('error');
     }
   };
   // async getMyLocation() {
